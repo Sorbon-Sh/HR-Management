@@ -15,7 +15,7 @@
     "@tailwindcss/vite": "^4.1.7",
     "@types/react-redux": "^7.1.34",
     "ag-grid-community": "^33.3.0",
-    "ag-grid-enterprise": "^33.3.0",
+    "ag-grid-enterprise": "^33.3.0", 
     "ag-grid-react": "^33.3.0",
     "convex": "^1.24.1",
     "convex-helpers": "^0.1.89",
