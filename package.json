@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build":"vite build && npx convex deploy",
+    "build": "tsc -b && vite build && npx convex deploy",
     "lint": "eslint .",
     "preview": "vite preview"
   },
