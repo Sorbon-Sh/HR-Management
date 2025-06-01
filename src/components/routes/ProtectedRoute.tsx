@@ -18,6 +18,9 @@ export const ProtectedRoute = ({ children }:IProps) => {
     // Если пользователь не вошёл — отправим на /auth/login (твой кастомный путь)
     return <Navigate to="/login" replace />;
   }
+  else{
+     <Navigate to="/" replace />
+  }
 
   // Пользователь авторизован — отобразим защищённый контент
   return <>{children}</>;
