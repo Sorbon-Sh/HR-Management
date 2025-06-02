@@ -23,6 +23,9 @@ createRoot(document.getElementById("root")!).render(
         redirect_uri: window.location.origin,
         // audience: "https://your-project.convex.cloud", // или без audience
       }}
+        onRedirectCallback={() => {
+    window.location.replace("/"); // ← отправим на главную после логина
+  }}
     >
     <ConvexProviderWithAuth client={convex} useAuth={useAuth}>
     <Provider store={store}>

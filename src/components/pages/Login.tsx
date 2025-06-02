@@ -1,5 +1,6 @@
 // src/components/auth/Login.tsx
 import { useAuth0 } from "@auth0/auth0-react";
+import { Navigate } from "react-router";
 
 export default function Login() {
   const { loginWithPopup, user, isAuthenticated } = useAuth0();
@@ -12,6 +13,10 @@ export default function Login() {
       console.error("Ошибка входа:", err);
     }
   };
+
+    if (isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="p-6 max-w-sm mx-auto">
