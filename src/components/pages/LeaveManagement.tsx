@@ -9,10 +9,11 @@ import {
   Clock,
   AlertCircle
 } from 'lucide-react';
-import Card from '../components/ui/Card';
-import Button from '../components/ui/Button';
-import Avatar from '../components/ui/Avatar';
-import Badge from '../components/ui/Badge';
+import Button from '../ui/buttons/Button';
+import Card from '../ui/cards/Card';
+import Badge from '../ui/Badge';
+import Avatar from '../ui/Avatar';
+
 
 const leaveData = [
   {
@@ -76,7 +77,7 @@ const leaveBalance = [
 
 const Leave = () => {
   const [currentTab, setCurrentTab] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const searchTerm = ''
 
   // Filter leave data based on tab and search
   const filteredLeaveData = leaveData.filter((leave) => {

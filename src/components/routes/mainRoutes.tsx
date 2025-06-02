@@ -1,14 +1,15 @@
 import { createBrowserRouter } from "react-router";
-import App from "../../App";
+
 import Login from "../pages/Login";
 
 import { ProtectedRoute } from "./ProtectedRoute";
+import Employees from "../pages/Employees";
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (<ProtectedRoute><App /></ProtectedRoute>),
+    element: (<ProtectedRoute><Employees /></ProtectedRoute>),
   },
   {
     path: "/login",

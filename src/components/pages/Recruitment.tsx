@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { 
   Users, 
-  UserPlus, 
+  // UserPlus, 
   Briefcase, 
   FileText, 
   CheckCircle, 
@@ -16,10 +16,11 @@ import {
   Eye,
   Trash2
 } from 'lucide-react';
-import Card from '../components/ui/Card';
-import Button from '../components/ui/Button';
-import Avatar from '../components/ui/Avatar';
-import Badge from '../components/ui/Badge';
+import Badge from '../ui/Badge';
+import Button from '../ui/buttons/Button';
+import Card from '../ui/cards/Card';
+import Avatar from '../ui/Avatar';
+
 
 const jobOpenings = [
   {
