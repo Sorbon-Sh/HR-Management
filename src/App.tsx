@@ -5,6 +5,7 @@ import Leave from "./components/pages/LeaveManagement";
 import Performance from "./components/pages/Performance";
 import Recruitment from "./components/pages/Recruitment";
 import Settings from "./components/pages/Settings";
+import Dashboard from "./components/pages/Dashboard";
 
 
 function App() {
@@ -12,8 +13,8 @@ function App() {
     <BrowserRouter>
       <MainLayout>
         <Routes>
-          <Route path="/" element={<Navigate to="/employees" replace />} />
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employees" element={<Employees />} />
           {/* <Route path="/attendance" element={<Attendance />} /> */}
           <Route path="/leave" element={<Leave />} />
