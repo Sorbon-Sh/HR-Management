@@ -1,5 +1,4 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import MainLayout from "./components/layouts/Main";
 import Employees from "./components/pages/Employees";
 import Leave from "./components/pages/LeaveManagement";
 import Performance from "./components/pages/Performance";
@@ -8,13 +7,26 @@ import Settings from "./components/pages/Settings";
 import Dashboard from "./components/pages/Dashboard";
 import Attendance from "./components/pages/Attendance";
 import Payroll from "./components/pages/Payroll";
+import Login from "./components/pages/Login";
+import { ProtectedRoute } from "./components/routes/ProtectedRoute";
+import MainLayout from "./components/layouts/MainLayout";
 
 
 function App() {
   return (
-    <BrowserRouter>
-      <MainLayout>
-        <Routes>
+   <BrowserRouter>
+      <Routes>
+        {/* Публичный маршрут */}
+        <Route path="/login" element={<Login />} />
+
+        {/* Защищённый layout + дочерние маршруты */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employees" element={<Employees />} />
@@ -24,8 +36,8 @@ function App() {
           <Route path="/payroll" element={<Payroll />} />
           <Route path="/recruitment" element={<Recruitment />} />
           <Route path="/settings" element={<Settings />} />
-        </Routes>
-      </MainLayout>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
