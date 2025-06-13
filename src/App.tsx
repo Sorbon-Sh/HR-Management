@@ -6,6 +6,8 @@ import Performance from "./components/pages/Performance";
 import Recruitment from "./components/pages/Recruitment";
 import Settings from "./components/pages/Settings";
 import Dashboard from "./components/pages/Dashboard";
+import Attendance from "./components/pages/Attendance";
+import Payroll from "./components/pages/Payroll";
 
 
 function App() {
@@ -16,10 +18,10 @@ function App() {
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employees" element={<Employees />} />
-          {/* <Route path="/attendance" element={<Attendance />} /> */}
+          <Route path="/attendance" element={<Attendance />} />
           <Route path="/leave" element={<Leave />} />
           <Route path="/performance" element={<Performance />} />
-          {/* <Route path="/payroll" element={<Payroll />} /> */}
+          <Route path="/payroll" element={<Payroll />} />
           <Route path="/recruitment" element={<Recruitment />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>

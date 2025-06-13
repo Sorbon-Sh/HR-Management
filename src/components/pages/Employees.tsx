@@ -22,7 +22,8 @@ const employeesData = [
     name: 'John Doe',
     email: 'john.doe@company.com',
     department: 'Engineering',
-    position: 'Senior Developer',
+    designation: 'Software Engineer',
+
     status: 'Active',
     joinDate: 'May 15, 2022',
   },
@@ -31,7 +32,7 @@ const employeesData = [
     name: 'Jane Smith',
     email: 'jane.smith@company.com',
     department: 'Design',
-    position: 'UI/UX Designer',
+    designation: 'UI/UX Designer',
     status: 'Active',
     joinDate: 'Jun 3, 2022',
   },
@@ -40,7 +41,7 @@ const employeesData = [
     name: 'Robert Johnson',
     email: 'robert.johnson@company.com',
     department: 'Marketing',
-    position: 'Marketing Manager',
+    designation: 'Marketing Manager',
     status: 'On Leave',
     joinDate: 'Jan 12, 2021',
   },
@@ -49,7 +50,7 @@ const employeesData = [
     name: 'Emily Davis',
     email: 'emily.davis@company.com',
     department: 'HR',
-    position: 'HR Specialist',
+    designation: 'HR Specialist',
     status: 'Active',
     joinDate: 'Mar 24, 2023',
   },
@@ -58,7 +59,7 @@ const employeesData = [
     name: 'Michael Wilson',
     email: 'michael.wilson@company.com',
     department: 'Finance',
-    position: 'Financial Analyst',
+    designation: 'Financial Analyst',
     status: 'Active',
     joinDate: 'Nov 8, 2022',
   },
@@ -74,7 +75,7 @@ const Employees = () => {
       employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.position.toLowerCase().includes(searchTerm.toLowerCase());
+      employee.designation.toLowerCase().includes(searchTerm.toLowerCase());
     
     if (currentTab === 'all') return matchesSearch;
     if (currentTab === 'active') return matchesSearch && employee.status === 'Active';
@@ -164,6 +165,9 @@ const Employees = () => {
                   Employee
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ID
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Department
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -192,11 +196,14 @@ const Employees = () => {
                       </div>
                     </div>
                   </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {employee.id}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {employee.department}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {employee.position}
+                    {employee.designation}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <Badge 

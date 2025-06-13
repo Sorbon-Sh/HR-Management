@@ -1,6 +1,7 @@
 import { Bell, HelpCircle, Mail, Menu, Search } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
+import LogoutButton from '../ui/buttons/LogoutButton';
 
 
 interface HeaderProps {
@@ -74,6 +75,8 @@ const Header = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
           <button className="p-2 text-gray-500 rounded-md hover:bg-gray-100">
             <HelpCircle size={20} />
           </button>
+
+          <LogoutButton />
           
           {/* Mobile search button */}
           <button className="p-2 text-gray-500 rounded-md hover:bg-gray-100 md:hidden">
