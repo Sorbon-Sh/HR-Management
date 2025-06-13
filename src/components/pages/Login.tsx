@@ -1,7 +1,7 @@
 // src/components/auth/Login.tsx
 import { useAuth0 } from "@auth0/auth0-react";
 import { Navigate } from "react-router";
-
+import HR from "../../assets/undraw_saving-notes_wp71.svg"
 export default function Login() {
   const { loginWithPopup, user, isAuthenticated, isLoading } = useAuth0();
 
@@ -36,7 +36,7 @@ export default function Login() {
       {/* Левая часть: Иллюстрация */}
       <div className="hidden md:flex w-1/2 bg-blue-100 justify-center items-center">
         <img
-          src="https://images.unsplash.com/photo-1605902711622-cfb43c4437d5?auto=format&fit=crop&w=800&q=80"
+          src={HR}
           alt="HR Illustration"
           className="w-3/4 h-auto rounded-xl shadow-lg"
         />
