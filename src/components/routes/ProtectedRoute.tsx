@@ -14,10 +14,10 @@ export const ProtectedRoute = ({ children }:IProps) => {
     return <div className="p-6 text-center">Загрузка...</div>;
   }
 
-  if (!isAuthenticated) {
-    // Если пользователь не вошёл — отправим на /auth/login (твой кастомный путь)
-    return <Navigate to="/login" replace />;
-  }
+  // if (!isAuthenticated) {
+  //   // Если пользователь не вошёл — отправим на /auth/login (твой кастомный путь)
+  //   return <Navigate to="/login" replace />;
+  // }
 
 
   // Пользователь авторизован — отобразим защищённый контент
