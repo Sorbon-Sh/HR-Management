@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { api } from "../../../convex/_generated/api"
 import { 
   Search, 
   Plus, 
@@ -14,75 +15,18 @@ import Button from '../ui/buttons/Button';
 import Card from '../ui/cards/Card';
 import Badge from '../ui/Badge';
 import Avatar from '../ui/Avatar';
+import { useQuery } from 'convex/react';
 
-
-const employeesData = [
-  {
-    id: 1,
-    name: 'John Doe',
-    email: 'john.doe@company.com',
-    department: 'Engineering',
-    designation: 'Software Engineer',
-
-    status: 'Active',
-    joinDate: 'May 15, 2022',
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    email: 'jane.smith@company.com',
-    department: 'Design',
-    designation: 'UI/UX Designer',
-    status: 'Active',
-    joinDate: 'Jun 3, 2022',
-  },
-  {
-    id: 3,
-    name: 'Robert Johnson',
-    email: 'robert.johnson@company.com',
-    department: 'Marketing',
-    designation: 'Marketing Manager',
-    status: 'On Leave',
-    joinDate: 'Jan 12, 2021',
-  },
-  {
-    id: 4,
-    name: 'Emily Davis',
-    email: 'emily.davis@company.com',
-    department: 'HR',
-    designation: 'HR Specialist',
-    status: 'Active',
-    joinDate: 'Mar 24, 2023',
-  },
-  {
-    id: 5,
-    name: 'Michael Wilson',
-    email: 'michael.wilson@company.com',
-    department: 'Finance',
-    designation: 'Financial Analyst',
-    status: 'Active',
-    joinDate: 'Nov 8, 2022',
-  },
-];
 
 const Employees = () => {
+  
+const employees = useQuery(api.functions.employees.getEmployees);
+console.log('Employees data from API:', employees);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [currentTab, setCurrentTab] = useState('all');
 
-  // Filter employees based on search term and current tab
-  const filteredEmployees = employeesData.filter((employee) => {
-    const matchesSearch = 
-      employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.designation.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    if (currentTab === 'all') return matchesSearch;
-    if (currentTab === 'active') return matchesSearch && employee.status === 'Active';
-    if (currentTab === 'onLeave') return matchesSearch && employee.status === 'On Leave';
-    
-    return matchesSearch;
-  });
+
 
   return (
     <div className="space-y-6">
@@ -185,7 +129,7 @@ const Employees = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredEmployees.map((employee) => (
+              { employees && employees.map((employee) => (
                 <tr key={employee.id} className="hover:bg-gray-50 transition-colors duration-150">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
@@ -197,7 +141,7 @@ const Employees = () => {
                     </div>
                   </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {employee.id}
+                    {employee._id}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {employee.department}
