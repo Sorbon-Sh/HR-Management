@@ -19,9 +19,10 @@ import { useQuery } from 'convex/react';
 
 
 const Employees = () => {
-  
+const user = useQuery(api.functions.users.getCurrentUser);
 const employees = useQuery(api.functions.employees.getEmployees);
 console.log('Employees data from API:', employees);
+console.log('Current user data:', user);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentTab, setCurrentTab] = useState('all');
