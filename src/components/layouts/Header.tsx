@@ -34,7 +34,7 @@ const Header = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
   
   return (
     <header 
-      className={`sticky top-0 z-10 bg-white transition-shadow duration-200 ${
+      className={`sticky top-0 z-10  transition-shadow duration-200 ${
         isScrolled ? 'shadow-md' : ''
       }`}
     >

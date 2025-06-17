@@ -58,7 +58,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
           animate={{ x: 0 }}
           exit={{ x: -280 }}
           transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-          className={`fixed inset-y-0 left-0 z-30 flex flex-col w-64 h-screen  bg-[#384f50] border-r border-gray-200 shadow-lg lg:relative transform ${
+          className={`fixed inset-y-0 left-0 z-30 flex flex-col w-64 h-screen lg:relative transform ${
             isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
           } transition-transform duration-300 ease-in-out `}
         >
