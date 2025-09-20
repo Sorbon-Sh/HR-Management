@@ -15,14 +15,16 @@ import Button from '../ui/buttons/Button';
 import Card from '../ui/cards/Card';
 import Badge from '../ui/Badge';
 import Avatar from '../ui/Avatar';
-import { useQuery } from 'convex/react';
-
+import { useQuery } from "convex/react";
 
 const Employees = () => {
 const user = useQuery(api.functions.users.getCurrentUser);
 const employees = useQuery(api.functions.employees.getEmployees);
+
+
 console.log('Employees data from API:', employees);
 console.log('Current user data:', user);
+
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentTab, setCurrentTab] = useState('all');
@@ -107,7 +109,7 @@ console.log('Current user data:', user);
             <thead className="bg-gray-50">
               <tr>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Employee
+                  Employee Just 
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   ID

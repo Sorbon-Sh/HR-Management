@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npx convex dev\" \"vite\"",
+    "dev": "concurrently \"npx convex deploy\" \"vite\"",
     "build": "tsc -b && vite build && npx convex deploy",
     "lint": "eslint .",
     "preview": "vite preview"

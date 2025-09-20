@@ -19,7 +19,6 @@ import type * as schemas_employees_createEmployee from "../schemas/employees/cre
 import type * as schemas_employees_deleteEmployee from "../schemas/employees/deleteEmployee.js";
 import type * as schemas_employees_getEmployees from "../schemas/employees/getEmployees.js";
 import type * as schemas_employees_updateEmployee from "../schemas/employees/updateEmployee.js";
-import type * as schemas_usersSchema from "../schemas/usersSchema.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -36,7 +35,6 @@ declare const fullApi: ApiFromModules<{
   "schemas/employees/deleteEmployee": typeof schemas_employees_deleteEmployee;
   "schemas/employees/getEmployees": typeof schemas_employees_getEmployees;
   "schemas/employees/updateEmployee": typeof schemas_employees_updateEmployee;
-  "schemas/usersSchema": typeof schemas_usersSchema;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
