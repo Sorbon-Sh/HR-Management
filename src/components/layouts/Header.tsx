@@ -31,6 +31,8 @@ const Header = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+
   
   return (
     <header 

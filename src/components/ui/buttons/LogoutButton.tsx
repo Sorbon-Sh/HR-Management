@@ -1,13 +1,20 @@
-import { useLogout } from "../../../shared/hooks/auth/useLogout";
+import { useNavigate } from "react-router";
+import supabase from "../../../shared/api/supabaseClient";
+
 
 
 const LogoutButton = () => {
-  const { handleLogout } = useLogout();
+  const navigation = useNavigate()
+  const logOut = async () => {
+    const {error} = await supabase.auth.signOut()
+    if(error) return console.log("Logout error: ", error.message)
+    navigation("/login")
+  }
 
   return (
     <button
-      onClick={handleLogout}
       className="text-white bg-red-600 px-4 py-2 rounded"
+      onClick={logOut}
     >
       Выйти
     </button>

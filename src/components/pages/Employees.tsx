@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { api } from "../../../convex/_generated/api"
 import { 
   Search, 
   Plus, 
@@ -15,16 +14,11 @@ import Button from '../ui/buttons/Button';
 import Card from '../ui/cards/Card';
 import Badge from '../ui/Badge';
 import Avatar from '../ui/Avatar';
-import { useQuery } from "convex/react";
+
 
 const Employees = () => {
-const user = useQuery(api.functions.users.getCurrentUser);
-const employees = useQuery(api.functions.employees.getEmployees);
 
-
-console.log('Employees data from API:', employees);
-console.log('Current user data:', user);
-
+  const employees: [] = []
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentTab, setCurrentTab] = useState('all');
@@ -132,7 +126,7 @@ console.log('Current user data:', user);
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              { employees && employees.map((employee) => (
+              {  employees.map((employee) => (
                 <tr key={employee.id} className="hover:bg-gray-50 transition-colors duration-150">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">

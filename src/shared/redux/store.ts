@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-
+import signInDataReducer from './slices/authData'
 
 export const store = configureStore({
   reducer: {
-
+  usersSignIn: signInDataReducer
   },
 })
 

@@ -7,7 +7,7 @@ import Settings from "./components/pages/Settings";
 import Dashboard from "./components/pages/Dashboard";
 import Attendance from "./components/pages/Attendance";
 import Payroll from "./components/pages/Payroll";
-import Login from "./components/pages/Login";
+import AuthPage from "./components/pages/AuthPage";
 import { ProtectedRoute } from "./components/routes/ProtectedRoute";
 import MainLayout from "./components/layouts/MainLayout";
 
@@ -17,7 +17,7 @@ function App() {
    <BrowserRouter>
       <Routes>
         {/* Публичный маршрут */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<AuthPage />} />
 
         {/* Защищённый layout + дочерние маршруты */}
         <Route
