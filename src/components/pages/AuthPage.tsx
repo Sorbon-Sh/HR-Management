@@ -32,7 +32,7 @@ reset()
 
 
   if(!isLogin){
-
+ 
     const {data, error} = await supabase.auth.signUp({
   email: formData.email,
   password: String(formData.password),
