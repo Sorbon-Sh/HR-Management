@@ -18,7 +18,7 @@ if(isLogin){
     email: formData.email,
     password: String(formData.password),
   })
-  console.log("Login Data: ", data ? data : "загрузка");
+  console.log("Login Data: ", data );
 
   if(error) throw new Error(error.message)
 
@@ -31,14 +31,16 @@ reset()
 }
 
 
-//   if(!isLogin){
+  if(!isLogin){
 
-//     const {data, error} = supabase.auth.signUp({
-//   email: formData.email,
-//   password: String(formData.password),
-// })
+    const {data, error} = await supabase.auth.signUp({
+  email: formData.email,
+  password: String(formData.password),
+})
+console.log("Register Data: ",data );
+console.log("Register Error: ",error );
+}
 
-// }
 
 
   }
