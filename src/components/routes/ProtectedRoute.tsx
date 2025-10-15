@@ -29,6 +29,9 @@ export const ProtectedRoute = ({ children }:IProps) => {
 
    getSession()
   },[])
+
+
+
 // * Понадабится для работы
 //  supabase.auth.onAuthStateChange((event, session) => { 
 //   console.log("Auth event: ", event)

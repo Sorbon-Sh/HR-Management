@@ -33,14 +33,35 @@ reset()
 
   if(!isLogin){
  
-    const {data, error} = await supabase.auth.signUp({
+const { data, error } = await supabase.auth.signUp({
   email: formData.email,
   password: String(formData.password),
-})
-console.log("Register Data: ",data );
-console.log("Register Error: ",error );
+  options: {
+    data: {
+      full_name: formData.fullName,
+    },
+  },
+});
+
+if (error) {
+  console.error("Ошибка регистрации:", error.message);
+  return;
+}
+// * Создаем доп данные пользователя в Supabase (Cоздаём профиль) с методом Profiles
+if (data.user) {
+  console.log("User Data: ", data)
+  const { error: profileError } = await supabase.from("profiles").insert({
+    id: data.user.id,
+    full_name: formData.fullName,
+    role: "user", // можно задать по умолчанию
+  });
+
+  if (profileError) console.error("Ошибка при создании профиля:", profileError.message);
 }
 
+navigation("/")
+
+}
 
 
   }
