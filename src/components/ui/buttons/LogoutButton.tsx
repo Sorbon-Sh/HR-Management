@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router";
 import supabase from "../../../shared/api/supabaseClient";
 
-
-
 const LogoutButton = () => {
   const navigation = useNavigate()
   const logOut = async () => {

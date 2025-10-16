@@ -10,10 +10,8 @@ interface IProps {
 export const ProtectedRoute = ({ children }:IProps) => {
   const  [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  let render = 0
- console.log("Rednder ProtectedRoute", ++render);
+  
  console.log("isAuthenticated изменился:", isAuthenticated);
-
 // * Помтом запускается useEffect ( после ) монтировании компонента
 // * useLayoutEffect запускается ( перед ) отрисовкой компонента можно использовать и его
   useEffect(() => {
@@ -26,8 +24,9 @@ export const ProtectedRoute = ({ children }:IProps) => {
     setIsLoading(false)
     console.log("Session: ", !!session)
    }
-
+    
    getSession()
+
   },[])
 
 
@@ -45,9 +44,10 @@ export const ProtectedRoute = ({ children }:IProps) => {
 // * isLoading нужен, чтобы “заморозить” поведение компонента, 
 // * пока React не узнает результат проверки.
   if (isLoading) {
-
     return <div className="p-6 text-center">Загрузка...</div>;
-  }else{
+  }
+  else{
+
     if(isAuthenticated){
       return <>{children}</>
     }

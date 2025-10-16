@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 interface IAuthData {
  signIn: null | {email: string, password:string},
  singUp: null | object
- acsessToken?: string
+ logOut?: string
 }
 
 
@@ -19,13 +19,13 @@ export const authDataSlice = createSlice({
     signInData: (state, action) => {
       state.signIn  = action.payload
     },
-    acesssTokenData: (state, action) => {
-      state.acsessToken  = action.payload
+    logOut: (state, action) => {
+      state.logOut  = action.payload
     }
   },
 })
 
-export const { signInData, acesssTokenData } = authDataSlice.actions
+export const { signInData,logOut } = authDataSlice.actions
 
 
 export default authDataSlice.reducer

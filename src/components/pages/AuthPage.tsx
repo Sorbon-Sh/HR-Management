@@ -18,8 +18,7 @@ if(isLogin){
     email: formData.email,
     password: String(formData.password),
   })
-  console.log("Login Data: ", data );
-
+  
   if(error) throw new Error(error.message)
 
   if(data){
@@ -27,43 +26,29 @@ if(isLogin){
   }
 
 reset()
-
 }
 
 
   if(!isLogin){
- 
-const { data, error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
   email: formData.email,
   password: String(formData.password),
-  options: {
-    data: {
-      full_name: formData.fullName,
-    },
-  },
-});
+})
 
-if (error) {
-  console.error("Ошибка регистрации:", error.message);
-  return;
-}
+if (error) throw new Error(error.message);
 // * Создаем доп данные пользователя в Supabase (Cоздаём профиль) с методом Profiles
 if (data.user) {
-  console.log("User Data: ", data)
-  const { error: profileError } = await supabase.from("profiles").insert({
+  const {error: profileError } = await supabase.from("profiles").insert({
     id: data.user.id,
     full_name: formData.fullName,
     role: "user", // можно задать по умолчанию
   });
 
-  if (profileError) console.error("Ошибка при создании профиля:", profileError.message);
+  if (profileError) throw new Error(profileError.message);
 }
 
 navigation("/")
-
 }
-
-
   }
 
 
