@@ -2,6 +2,9 @@
 import  { useEffect, useState, type ReactNode } from "react";
 import { Navigate } from "react-router";
 import supabase from "../../shared/api/supabaseClient";
+import Loading from "../layouts/Loading";
+import { useAppDispatch, useAppSelector } from "../../shared/hooks/useReduxTypedHooks";
+import { logOut } from "../../shared/redux/slices/authData";
 
 interface IProps {
   children: ReactNode;
@@ -9,9 +12,11 @@ interface IProps {
 // * Сначало запускается компонет и читает весь код
 export const ProtectedRoute = ({ children }:IProps) => {
   const  [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  
+  const isLoading = useAppSelector((state) => state.userLogOut.logOut)
+  const dispatch = useAppDispatch()
  console.log("isAuthenticated изменился:", isAuthenticated);
+
+
 // * Помтом запускается useEffect ( после ) монтировании компонента
 // * useLayoutEffect запускается ( перед ) отрисовкой компонента можно использовать и его
   useEffect(() => {
@@ -21,12 +26,11 @@ export const ProtectedRoute = ({ children }:IProps) => {
     } = await supabase.auth.getSession()
 
     setIsAuthenticated( !!session )
-    setIsLoading(false)
+    dispatch(logOut(false))
     console.log("Session: ", !!session)
    }
     
    getSession()
-
   },[])
 
 
@@ -44,7 +48,7 @@ export const ProtectedRoute = ({ children }:IProps) => {
 // * isLoading нужен, чтобы “заморозить” поведение компонента, 
 // * пока React не узнает результат проверки.
   if (isLoading) {
-    return <div className="p-6 text-center">Загрузка...</div>;
+    return <Loading />
   }
   else{
 
