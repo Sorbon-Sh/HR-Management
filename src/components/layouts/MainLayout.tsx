@@ -32,11 +32,11 @@ const MainLayout = () => {
   }, []);
   
   // Close sidebar on mobile when route changes
-  useEffect(() => {
-    if (isMobile) {
-      setSidebarOpen(false);
-    }
-  }, [location, isMobile]);
+  // useEffect(() => {
+  //   if (isMobile) {
+  //     setSidebarOpen(false);
+  //   }
+  // }, [location, isMobile]);
   
   return (
     <div className="flex h-lvh bg-[#3a4c4f] pt-4 pr-4">

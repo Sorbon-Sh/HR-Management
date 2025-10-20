@@ -14,31 +14,28 @@ import MainLayout from "./components/layouts/MainLayout";
 
 function App() {
   return (
-   <BrowserRouter>
-      <Routes>
-        {/* Публичный маршрут */}
-        <Route path="/login" element={<AuthPage />} />
+  <BrowserRouter>
+  <Routes>
+    {/* Публичный маршрут */}
+    <Route path="/login" element={<AuthPage />} />
 
-        {/* Защищённый layout + дочерние маршруты */}
-        <Route
-          element={
-            <ProtectedRoute>
-              <MainLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/employees" element={<Employees />} />
-          <Route path="/attendance" element={<Attendance />} />
-          <Route path="/leave" element={<Leave />} />
-          <Route path="/performance" element={<Performance />} />
-          <Route path="/payroll" element={<Payroll />} />
-          <Route path="/recruitment" element={<Recruitment />} />
-          <Route path="/settings" element={<Settings />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    {/* Защищённые маршруты */}
+    <Route element={<ProtectedRoute />}>
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/employees" element={<Employees />} />
+        <Route path="/attendance" element={<Attendance />} />
+        <Route path="/leave" element={<Leave />} />
+        <Route path="/performance" element={<Performance />} />
+        <Route path="/payroll" element={<Payroll />} />
+        <Route path="/recruitment" element={<Recruitment />} />
+        <Route path="/settings" element={<Settings />} />
+      </Route>
+    </Route>
+  </Routes>
+</BrowserRouter>
+
   );
 }
 

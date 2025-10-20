@@ -1,45 +1,40 @@
 // src/components/auth/ProtectedRoute.tsx
-import  { useEffect, useLayoutEffect, useState, type ReactNode } from "react";
-import { Navigate } from "react-router";
+import  { useEffect, useState } from "react";
+import { Navigate, Outlet } from "react-router";
 import supabase from "../../shared/api/supabaseClient";
 import Loading from "../layouts/Loading";
-import { useAppDispatch, useAppSelector } from "../../shared/hooks/useReduxTypedHooks";
-import { logOut } from "../../shared/redux/slices/authData";
 
-interface IProps {
-  children: ReactNode;
-}
+
 // * Сначало запускается компонет и читает весь код
-export const ProtectedRoute = ({ children }:IProps) => {
+export const ProtectedRoute = () => {
   const  [isAuthenticated, setIsAuthenticated] = useState(false)
-  const isLoading = useAppSelector((state) => state.userLogOut.logOut)
-  const dispatch = useAppDispatch()
- console.log("---------------------------------------------------------- ")
- console.log("isAuthenticated изменился:", isAuthenticated);
- console.log("isLaoding :", isLoading)
- console.log("---------------------------------------------------------- ")
+  const [isLoading, setIsLoading] = useState(true)
+  
+  // * Нужен триггер чтобы комопнент знал что пользователь нажал на кнопку выхода
+   supabase.auth.onAuthStateChange((_event, session) => { 
+  if(!session) setIsLoading(true)
+  })
 
+ console.log("isAuthenticated изменился:", isAuthenticated);
 // * Помтом запускается useEffect ( после ) монтировании компонента
 // * useLayoutEffect запускается ( перед ) отрисовкой компонента можно использовать и его
-  useLayoutEffect(() => {
+  useEffect(() => {
    const getSession = async () => {
-    // *Когда нужно управлять загрузку компонента, её квлючатель и выключатель нужно делать в самом  компонете если одно есть а другое нет то может быть не корректная работа
-     dispatch(logOut(true))
-
     const {
       data: {session}
     } = await supabase.auth.getSession()
-    dispatch(logOut(false))
-    setIsAuthenticated(!!session)
-    
-    console.log("Insede Effect isLoading: ", isLoading)
-    console.log("Session: ", !!session)
-    console.log("Session: ", session)
-    console.log("setIsAuthenticated: ", isAuthenticated)
+
+    setIsAuthenticated( !!session )
+    setIsLoading(false)
+    console.log("effect log")
    }
     
    getSession()
+
+   console.log("Mounted:", performance.now());
+return () => console.log("Unmounted:", performance.now());
   },[])
+
 
 
 
@@ -47,7 +42,10 @@ export const ProtectedRoute = ({ children }:IProps) => {
 //  supabase.auth.onAuthStateChange((event, session) => { 
 //   console.log("Auth event: ", event)
 //   console.log("Session: ", session)
+//   if(event === "SIGNED_OUT") setIsLoading(true)
 //   })
+
+
 
 //   useEffect(() => {
 //   console.log("isAuthenticated изменился:", isAuthenticated);
@@ -55,13 +53,15 @@ export const ProtectedRoute = ({ children }:IProps) => {
 
 // * isLoading нужен, чтобы “заморозить” поведение компонента, 
 // * пока React не узнает результат проверки.
+// ! Моя версия с isLoading была провальной Нужно узнать как это работает
+
   if (isLoading) {
     return <Loading />
   }
   else{
 
     if(isAuthenticated){
-      return <>{children}</>
+      return <Outlet />
     }
     // * Иначе useEffect не успеет изменить данные в useState чтобы данные обновились и перерисовались
   return <Navigate to="/login" />
