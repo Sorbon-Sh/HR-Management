@@ -25,6 +25,7 @@
     "react-hook-form": "^7.56.4",
     "react-redux": "^9.2.0",
     "react-router": "^7.6.0",
+    "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.7"
   },
   "devDependencies": {
@@ -48,5 +49,5 @@
       "esbuild"
     ]
   },
-  "packageManager": "pnpm@10.18.3+sha256.797d0059bc5fc3356d79c681615a137c7b35e4efc03a4449a8a1abfcbcc4bdc7"
+  "packageManager": "pnpm@10.19.0+sha256.1c5f5ee59267e4e2e1bfd335f432a18dc48f9a9944094d5d2649757e725ad376"
 }

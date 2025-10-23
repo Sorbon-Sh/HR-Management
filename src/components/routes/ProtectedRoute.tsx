@@ -3,6 +3,7 @@ import  { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
 import supabase from "../../shared/api/supabaseClient";
 import Loading from "../layouts/Loading";
+import { ToastContainer } from "react-toastify";
 
 
 // * Сначало запускается компонет и читает весь код
@@ -26,7 +27,6 @@ export const ProtectedRoute = () => {
 
     setIsAuthenticated( !!session )
     setIsLoading(false)
-    console.log("effect log")
    }
     
    getSession()
@@ -61,7 +61,12 @@ return () => console.log("Unmounted:", performance.now());
   else{
 
     if(isAuthenticated){
-      return <Outlet />
+      return (
+        <>
+        <Outlet />
+        <ToastContainer />
+        </>
+      )
     }
     // * Иначе useEffect не успеет изменить данные в useState чтобы данные обновились и перерисовались
   return <Navigate to="/login" />

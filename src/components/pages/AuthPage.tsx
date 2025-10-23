@@ -3,6 +3,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import supabase from "../../shared/api/supabaseClient";
 import { useNavigate } from "react-router";
 import type { InputsAuth } from "../../shared/types/AuthTypes";
+import { toast, ToastContainer } from "react-toastify";
 
 
 export default function AuthPage() {
@@ -13,17 +14,25 @@ export default function AuthPage() {
   const submit: SubmitHandler<InputsAuth> = async  (formData) => {
 
 if(isLogin){
-
+   const toastLoading = toast.loading("Вход в систему...")
     const {data, error} = await supabase.auth.signInWithPassword({
     email: formData.email,
     password: String(formData.password),
   })
-  
-  if(error) throw new Error(error.message)
 
-  if(data){
-    navigation("/")
+  
+  if(error){ 
+      toast.update(toastLoading, 
+{render: "Не правильный логин или пароль!",
+   type: "error", 
+   isLoading: false,
+   autoClose: 3000})
+
+    throw new Error(error.message)
   }
+
+  if(data) navigation("/")
+  console.log("Login data: ", data)
 
 reset()
 }
@@ -113,6 +122,7 @@ navigation("/")
           </p>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

@@ -1,15 +1,12 @@
 import { useNavigate } from "react-router";
 import supabase from "../../../shared/api/supabaseClient";
-import { useAppDispatch } from "../../../shared/hooks/useReduxTypedHooks";
-import { logOut } from "../../../shared/redux/slices/authData";
-
+import { toast } from "react-toastify";
 
 const LogoutButton = () => {
   const navigation = useNavigate()
-  const dispatch  = useAppDispatch()
   
   const handleLogOut = async () => {
-    dispatch(logOut(true))
+    toast.loading("Выход из системы...")
     const {error} = await supabase.auth.signOut()
     if(error) return console.log("Logout error: ", error.message)
     navigation("/login")
