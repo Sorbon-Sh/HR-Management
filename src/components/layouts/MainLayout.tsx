@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
-
+import { useState} from 'react';
 import Header from './Header';
-import { Outlet, useLocation } from 'react-router';
+import { Outlet} from 'react-router';
 import Sidebar from './SideBar';
 
 
@@ -9,34 +8,6 @@ import Sidebar from './SideBar';
 
 const MainLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-  const location = useLocation();
-  
-  // Handle responsive layout
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth < 768) {
-        setSidebarOpen(false);
-      } else {
-        setSidebarOpen(true);
-      }
-    };
-    
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-  
-  // Close sidebar on mobile when route changes
-  // useEffect(() => {
-  //   if (isMobile) {
-  //     setSidebarOpen(false);
-  //   }
-  // }, [location, isMobile]);
   
   return (
     <div className="flex h-lvh bg-[#3a4c4f] pt-4 pr-4">

@@ -2,4 +2,5 @@
     fullName: string,
     email: string,
     password: number
+    position: string
   }

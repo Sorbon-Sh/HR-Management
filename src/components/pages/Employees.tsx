@@ -14,6 +14,8 @@ import Button from '../ui/buttons/Button';
 import Card from '../ui/cards/Card';
 import Badge from '../ui/Badge';
 import Avatar from '../ui/Avatar';
+import AddEmployer from '../ui/modals/AddEmployer';
+import { createPortal } from 'react-dom';
 
 
 const Employees = () => {
@@ -22,8 +24,7 @@ const Employees = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentTab, setCurrentTab] = useState('all');
-
-
+  const [employerModal,setEmployerModal] = useState(false);
 
   return (
     <div className="space-y-6">
@@ -43,6 +44,7 @@ const Employees = () => {
           <Button
             size="sm"
             icon={<Plus size={16} />}
+            onClick={() => {setEmployerModal(true)}}
           >
             Add Employee
           </Button>
@@ -103,19 +105,19 @@ const Employees = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Employee Just 
+                  Employee 
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   ID
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Email
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Department
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Position
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Join Date
@@ -194,6 +196,7 @@ const Employees = () => {
           </div>
         </div>
       </Card>
+      {employerModal && createPortal(<AddEmployer closeModal={setEmployerModal}/>, document.body)}
     </div>
   );
 };
