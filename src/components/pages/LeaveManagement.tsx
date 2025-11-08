@@ -13,6 +13,8 @@ import Button from '../ui/buttons/Button';
 import Card from '../ui/cards/Card';
 import Badge from '../ui/Badge';
 import Avatar from '../ui/Avatar';
+import { createPortal } from 'react-dom';
+import LeaveRequest from '../ui/modals/LeaveRequest';
 
 
 const leaveData = [
@@ -77,6 +79,7 @@ const leaveBalance = [
 
 const Leave = () => {
   const [currentTab, setCurrentTab] = useState('all');
+  const [leaveModal, setLeaveModal] = useState(false);
   const searchTerm = ''
 
   // Filter leave data based on tab and search
@@ -112,6 +115,7 @@ const Leave = () => {
           <Button
             size="sm"
             icon={<Plus size={16} />}
+            onClick={() => setLeaveModal(true)}
           >
             New Request
           </Button>
@@ -343,6 +347,7 @@ const Leave = () => {
           </div>
         </Card>
       </div>
+      {leaveModal && createPortal(<LeaveRequest closeModal={setLeaveModal}/>,  document.body)}
     </div>
   );
 };

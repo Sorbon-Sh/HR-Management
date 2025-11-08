@@ -17,6 +17,8 @@ import Button from '../ui/buttons/Button';
 import Card from '../ui/cards/Card';
 import Badge from '../ui/Badge';
 import Avatar from '../ui/Avatar';
+import { createPortal } from 'react-dom';
+import AddPerformance from '../ui/modals/AddPerformance';
 
 
 const performanceData = [
@@ -74,6 +76,7 @@ const performanceData = [
 
 const Performance = () => {
   const [currentTab, setCurrentTab] = useState('all');
+  const [performanceModal, setPerformanceModal] = useState(false);
 
   // Filter performance data based on status
   const filteredPerformanceData = performanceData.filter((item) => {
@@ -129,6 +132,7 @@ const Performance = () => {
           <Button
             size="sm"
             icon={<Plus size={16} />}
+            onClick={() => setPerformanceModal(true)}
           >
             New Review
           </Button>
@@ -335,6 +339,7 @@ const Performance = () => {
           </div>
         </div>
       </Card>
+      {performanceModal && createPortal(<AddPerformance closeModal={setPerformanceModal} />, document.body)}
     </div>
   );
 };

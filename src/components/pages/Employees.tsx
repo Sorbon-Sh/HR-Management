@@ -16,11 +16,12 @@ import Badge from '../ui/Badge';
 import Avatar from '../ui/Avatar';
 import AddEmployer from '../ui/modals/AddEmployer';
 import { createPortal } from 'react-dom';
+import { useGetEmployerQuery } from '../../shared/api/addEmployer';
 
 
 const Employees = () => {
 
-  const employees: [] = []
+  const {data: employees} = useGetEmployerQuery()
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentTab, setCurrentTab] = useState('all');
@@ -108,7 +109,7 @@ const Employees = () => {
                   Employee 
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ID
+                  Phone
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Email
@@ -128,33 +129,34 @@ const Employees = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {  employees.map((employee) => (
-                <tr key={employee.id} className="hover:bg-gray-50 transition-colors duration-150">
+              { employees &&  employees.map((employee) => (
+                <tr key={employee.employer} className="hover:bg-gray-50 transition-colors duration-150">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <Avatar name={employee.name} size="sm" />
+                      <Avatar name={employee.employer} size="sm" />
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{employee.name}</div>
+                        <div className="text-sm font-medium text-gray-900">{employee.employer}</div>
                         <div className="text-sm text-gray-500">{employee.email}</div>
                       </div>
                     </div>
                   </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {employee._id}
+                    {employee.phone}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {employee.email}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {employee.department}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {employee.designation}
-                  </td>
+                  
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <Badge 
+                    {/* <Badge 
                       variant={employee.status === 'Active' ? 'success' : 'warning'} 
                       rounded
                     >
                       {employee.status}
-                    </Badge>
+                    </Badge> */}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {employee.joinDate}

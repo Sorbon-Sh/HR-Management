@@ -1,10 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit'
 import signInDataReducer  from './slices/authData'
+import { employerApi } from '../api/addEmployer'
 
 export const store = configureStore({
   reducer: {
   usersSignIn: signInDataReducer,
+  [employerApi.reducerPath]: employerApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(
+      employerApi.middleware,
+
+    ),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -1,32 +1,16 @@
+import type { ICloseModal } from "../../../shared/types"
+import Button from "../buttons/Button"
+import ModalWrapper from "./ModalWrapper"
 
-import { useForm, type SubmitHandler } from "react-hook-form";
-import Button from "../buttons/Button";
-import ModalWrapper from "./ModalWrapper";
-import type { ICloseModal, IEmployerForm } from "../../../shared/types";
-import { useAddEmployerMutation } from "../../../shared/api/addEmployer";
-
-
-
-const AddEmployer = ({closeModal}: ICloseModal) => {
-
-  const [addEmployer] = useAddEmployerMutation();
-  const {register,handleSubmit,reset, formState} = useForm<IEmployerForm>()
-
-  const submit: SubmitHandler<IEmployerForm> = async (data) => {
-
-    await addEmployer(data)
-
-  }
+const AddPerformance = ({closeModal}: ICloseModal) => {
     return (
-  
-   <ModalWrapper closeModal={closeModal}>
-   <form className="space-y-6" onSubmit={handleSubmit(submit)}>
+     <ModalWrapper closeModal={closeModal}>
+   <form className="space-y-6">
       <h2 className="text-3xl font-extrabold text-gray-800 mb-4">Добавить сотрудника</h2>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="employerName">Имя</label>
         <input
-         {...register("employer", { required: true })}
           type="text"
           id="employerName"
           placeholder="Введите имя"
@@ -37,7 +21,6 @@ const AddEmployer = ({closeModal}: ICloseModal) => {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="employerEmail">Email</label>
         <input
-        {...register("email", { required: true })}
           type="email"
           id="employerEmail"
           placeholder="Введите email"
@@ -48,7 +31,6 @@ const AddEmployer = ({closeModal}: ICloseModal) => {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="employerPhone">Телефон</label>
         <input
-        {...register("phone", { required: true })}
           type="tel"
           id="employerPhone"
           placeholder="+7 (999) 999-99-99"
@@ -59,7 +41,6 @@ const AddEmployer = ({closeModal}: ICloseModal) => {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="employerDepartment">Отдел</label>
         <input
-        {...register("department", { required: true })}
           type="text"
           id="employerDepartment"
           placeholder="Отдел"
@@ -70,7 +51,6 @@ const AddEmployer = ({closeModal}: ICloseModal) => {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="employerPosition">Направление</label>
         <input
-          {...register("position", { required: true })}
           type="text"
           id="employerPosition"
           placeholder="Направление"
@@ -99,4 +79,4 @@ const AddEmployer = ({closeModal}: ICloseModal) => {
     )
 }
 
-export default AddEmployer;
+export default AddPerformance
