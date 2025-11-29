@@ -134,13 +134,13 @@ if(data.user) navigation("/")
               placeholder="E-mail"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-     {!isLogin && (
+     {/* {!isLogin && (
              <select {...register("position", { required: true })} defaultValue="" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
               <option  value="" disabled hidden>Позиция</option>
               <option value="user">Пользовател</option>
               <option value="admin">Администратор</option>
             </select>
-     )}
+     )} */}
             <input
               type="password"
              {...register("password", {

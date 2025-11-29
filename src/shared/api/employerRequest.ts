@@ -1,16 +1,14 @@
-
-import { createApi,fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import supabase from "./supabaseClient";
 import type { IEmployerForm } from "../types";
+import { rootApi } from "../redux/slices/rootApi";
 
-export const employerApi = createApi({
-  reducerPath: "employer",
-  baseQuery: fetchBaseQuery({}),
-  tagTypes: ["employer"],
+export const employerApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     addEmployer: builder.mutation({
       queryFn: async (formData) => {
-        const { data, error } = await supabase.from("employees").insert(formData);
+        const { data, error } = await supabase
+          .from("employees")
+          .insert(formData);
 
         if (error) {
           console.log(error.message);
@@ -19,9 +17,9 @@ export const employerApi = createApi({
 
         return { data: data || [] };
       },
-      invalidatesTags: [{ type: "employer" }],
+      invalidatesTags: [{ type: "employees" }],
     }),
-    getEmployer: builder.query<IEmployerForm[],void>({
+    getEmployer: builder.query<IEmployerForm[], void>({
       queryFn: async () => {
         const { data: data, error } = await supabase
           .from("employees")
@@ -33,7 +31,7 @@ export const employerApi = createApi({
 
         return { data: data || [] };
       },
-      providesTags: [{ type: "employer" }],
+      providesTags: [{ type: "employees" }],
     }),
     // updateEmployer: builder.mutation({
     //   queryFn: async (form) => {
@@ -104,11 +102,16 @@ export const employerApi = createApi({
     //   invalidatesTags: [{ type: "employer" }],
     // }),
   }),
+
+  //  без overrideExisting: false RTK Query молча
+  // перезапишет старые эндпоинты новыми,
+  //  что приведёт к неожиданный багам.
+  overrideExisting: false,
 });
 
 export const {
   useAddEmployerMutation,
   useGetEmployerQuery,
-//   useUpdateEmployerMutation,
-//   useDeleteEmployerMutation,
+  //   useUpdateEmployerMutation,
+  //   useDeleteEmployerMutation,
 } = employerApi;

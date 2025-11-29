@@ -9,5 +9,5 @@ export interface IEmployerForm {
     phone: string;
     department: string;
     position: string;
-    joinDate: string;
+    created_at: string;
 }

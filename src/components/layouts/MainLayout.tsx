@@ -1,14 +1,11 @@
-import { useState} from 'react';
-import Header from './Header';
-import { Outlet} from 'react-router';
-import Sidebar from './SideBar';
-
-
-
+import { useState } from "react";
+import Header from "./Header";
+import { Outlet } from "react-router";
+import Sidebar from "./SideBar";
 
 const MainLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  
+
   return (
     <div className="flex h-lvh bg-[#3a4c4f] pt-4 pr-4">
       <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
