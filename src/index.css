@@ -1,6 +1,6 @@
-/* * {
-    outline: 2px solid orange
-} */
+/** {
+    outline: 2px solid orange;
+}*/
 
 @import "tailwindcss";
 

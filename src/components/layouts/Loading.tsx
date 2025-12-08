@@ -1,9 +1,14 @@
+import "../../loaderStyle.css";
 const Loading = () => {
-    return (
-        <div className="flex items-center justify-center min-h-screen">
-        <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
-        </div>
-    );
-}
+  return (
+    <div className="loadingspinner">
+      <div id="square1"></div>
+      <div id="square2"></div>
+      <div id="square3"></div>
+      <div id="square4"></div>
+      <div id="square5"></div>
+    </div>
+  );
+};
 
-export default Loading
+export default Loading;

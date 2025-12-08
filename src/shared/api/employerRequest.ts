@@ -34,19 +34,9 @@ export const employerApi = rootApi.injectEndpoints({
       providesTags: [{ type: "employees" }],
     }),
     // updateEmployer: builder.mutation({
-    //   queryFn: async (form) => {
-    //     const [
-    //       formData,
-    //       planData,
-    //       dateIsString,
-    //       annualAmount,
-    //       monthlyAmount,
-    //       maxAmount,
-    //       rowsId,
-    //     ] = form;
-    //     const date = prepareDateWithOriginalParts(planData, dateIsString);
+    //   queryFn: async (formData) => {
     //     const { data, error: planError } = await supabase
-    //       .from("finplans")
+    //       .from("employees")
     //       .update({
     //         ...formData,
     //         annualAmount,
@@ -75,6 +65,7 @@ export const employerApi = rootApi.injectEndpoints({
 
     //   invalidatesTags: [{ type: "employer" }],
     // }),
+
     // deleteEmployer: builder.mutation({
     //   queryFn: async (rowsId) => {
     //     const deletePlan = await supabase

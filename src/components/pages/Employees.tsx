@@ -4,7 +4,6 @@ import {
   Plus,
   Filter,
   MoreVertical,
-  Download,
   Upload,
   Trash2,
   Edit,
@@ -15,11 +14,13 @@ import Avatar from "../ui/Avatar";
 import AddEmployer from "../ui/modals/AddEmployer";
 import { createPortal } from "react-dom";
 import { useGetEmployerQuery } from "../../shared/api/employerRequest";
+import Loading from "../layouts/Loading";
+import EmployeeDetailModal from "../ui/modals/EmployeeDetailModal";
 
 const Employees = () => {
   const { data: employees } = useGetEmployerQuery();
+  const [employeeModal, setEmployeeModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentTab, setCurrentTab] = useState("all");
   const [employerModal, setEmployerModal] = useState(false);
 
   return (
@@ -50,21 +51,6 @@ const Employees = () => {
       <Card noPadding>
         {/* Filters and search */}
         <div className="p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="flex space-x-2">
-            <button
-              className={`px-3 py-1.5 text-sm font-medium rounded-md ${currentTab === "all" ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:bg-gray-50"}`}
-              onClick={() => setCurrentTab("all")}
-            >
-              All Employees
-            </button>
-            <button
-              className={`px-3 py-1.5 text-sm font-medium rounded-md ${currentTab === "onLeave" ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:bg-gray-50"}`}
-              onClick={() => setCurrentTab("onLeave")}
-            >
-              Leave Requests
-            </button>
-          </div>
-
           <div className="flex items-center space-x-3">
             <div className="relative w-full md:w-64">
               <input
@@ -81,10 +67,6 @@ const Employees = () => {
 
             <button className="p-2 text-gray-500 rounded-md hover:bg-gray-100">
               <Filter size={20} />
-            </button>
-
-            <button className="p-2 text-gray-500 rounded-md hover:bg-gray-100">
-              <Download size={20} />
             </button>
           </div>
         </div>
@@ -134,7 +116,7 @@ const Employees = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {employees &&
+              {employees ? (
                 employees.map((employee) => (
                   <tr
                     key={employee.employer}
@@ -177,13 +159,20 @@ const Employees = () => {
                         <button className="p-1 text-red-500 rounded hover:bg-red-50">
                           <Trash2 size={16} />
                         </button>
-                        <button className="p-1 text-gray-500 rounded hover:bg-gray-100">
+                        <button
+                          onClick={() => setEmployeeModal(true)}
+                          className="p-1 text-gray-500 flex items-center rounded hover:bg-gray-100"
+                        >
+                          See more
                           <MoreVertical size={16} />
                         </button>
                       </div>
                     </td>
                   </tr>
-                ))}
+                ))
+              ) : (
+                <Loading />
+              )}
             </tbody>
           </table>
 
@@ -216,6 +205,7 @@ const Employees = () => {
           <AddEmployer closeModal={setEmployerModal} />,
           document.body,
         )}
+      {employeeModal && <EmployeeDetailModal closeModal={setEmployeeModal} />}
     </div>
   );
 };

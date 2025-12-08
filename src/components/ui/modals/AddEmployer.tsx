@@ -3,13 +3,21 @@ import Button from "../buttons/Button";
 import ModalWrapper from "./ModalWrapper";
 import type { ICloseModal, IEmployerForm } from "../../../shared/types";
 import { useAddEmployerMutation } from "../../../shared/api/employerRequest";
+import { toast } from "react-toastify";
 
 const AddEmployer = ({ closeModal }: ICloseModal) => {
   const [addEmployer] = useAddEmployerMutation();
   const { register, handleSubmit, reset, formState } = useForm<IEmployerForm>();
 
   const submit: SubmitHandler<IEmployerForm> = async (data) => {
+    const toastId = toast.loading("Добавление сотрудника...");
     await addEmployer(data);
+    toast.update(toastId, {
+      type: "success",
+      isLoading: false,
+      render: "Сотрудник успешно добавлен",
+      autoClose: 3000,
+    });
   };
   return (
     <ModalWrapper closeModal={closeModal}>
