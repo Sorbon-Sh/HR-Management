@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-  Search,
-  Plus,
-  Filter,
-  MoreVertical,
-  Upload,
-  Trash2,
-  Edit,
-} from "lucide-react";
+import { Search, Plus, Filter, Upload, Trash2, Edit } from "lucide-react";
 import Button from "../ui/buttons/Button";
 import Card from "../ui/cards/Card";
 import Avatar from "../ui/Avatar";
@@ -15,13 +7,18 @@ import AddEmployer from "../ui/modals/AddEmployer";
 import { createPortal } from "react-dom";
 import { useGetEmployerQuery } from "../../shared/api/employerRequest";
 import Loading from "../layouts/Loading";
-import EmployeeDetailModal from "../ui/modals/EmployeeDetailModal";
+import type { IEmployerForm } from "../../shared/types";
 
 const Employees = () => {
   const { data: employees } = useGetEmployerQuery();
-  const [employeeModal, setEmployeeModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [employerModal, setEmployerModal] = useState(false);
+  const [employerData, setEmployerData] = useState<IEmployerForm | null>(null);
+  console.log("Employees", "Start");
+  const getEmployerId = (employee: IEmployerForm) => {
+    setEmployerData(employee);
+    setEmployerModal(true);
+  };
 
   return (
     <div className="space-y-6">
@@ -153,18 +150,14 @@ const Employees = () => {
                   </td> */}
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end space-x-2">
-                        <button className="p-1 text-blue-500 rounded hover:bg-blue-50">
+                        <button
+                          onClick={() => getEmployerId(employee)}
+                          className="p-1 text-blue-500 rounded hover:bg-blue-50"
+                        >
                           <Edit size={16} />
                         </button>
                         <button className="p-1 text-red-500 rounded hover:bg-red-50">
                           <Trash2 size={16} />
-                        </button>
-                        <button
-                          onClick={() => setEmployeeModal(true)}
-                          className="p-1 text-gray-500 flex items-center rounded hover:bg-gray-100"
-                        >
-                          See more
-                          <MoreVertical size={16} />
                         </button>
                       </div>
                     </td>
@@ -202,10 +195,12 @@ const Employees = () => {
       </Card>
       {employerModal &&
         createPortal(
-          <AddEmployer closeModal={setEmployerModal} />,
+          <AddEmployer
+            employerData={employerData}
+            closeModal={setEmployerModal}
+          />,
           document.body,
         )}
-      {employeeModal && <EmployeeDetailModal closeModal={setEmployeeModal} />}
     </div>
   );
 };

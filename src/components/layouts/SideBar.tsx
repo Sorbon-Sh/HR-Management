@@ -34,8 +34,6 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
       name: "Performance",
       icon: <TrendingUp size={20} />,
     },
-    { path: "/payroll", name: "Payroll", icon: <DollarSign size={20} /> },
-    { path: "/recruitment", name: "Recruitment", icon: <UserPlus size={20} /> },
     { path: "/settings", name: "Settings", icon: <Settings size={20} /> },
   ];
 

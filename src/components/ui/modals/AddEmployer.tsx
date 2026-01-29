@@ -4,11 +4,20 @@ import ModalWrapper from "./ModalWrapper";
 import type { ICloseModal, IEmployerForm } from "../../../shared/types";
 import { useAddEmployerMutation } from "../../../shared/api/employerRequest";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
-const AddEmployer = ({ closeModal }: ICloseModal) => {
+interface IAddEmployerProps extends ICloseModal {
+  employerData: IEmployerForm;
+}
+
+const AddEmployer = ({ closeModal, employerData }: IAddEmployerProps) => {
   const [addEmployer] = useAddEmployerMutation();
-  const { register, handleSubmit, reset, formState } = useForm<IEmployerForm>();
-
+  const { register, handleSubmit, setValue, reset } = useForm<IEmployerForm>();
+  const handleCancel = () => {
+    reset();
+    // closeModal(false);
+  };
+  console.log("AddEmployer", "Start");
   const submit: SubmitHandler<IEmployerForm> = async (data) => {
     const toastId = toast.loading("Добавление сотрудника...");
     await addEmployer(data);
@@ -19,6 +28,18 @@ const AddEmployer = ({ closeModal }: ICloseModal) => {
       autoClose: 3000,
     });
   };
+
+  useEffect(() => {
+    console.log("employerData", employerData);
+    if (employerData) {
+      setValue("employer", employerData.employer);
+      setValue("email", employerData.email);
+      setValue("phone", employerData.phone);
+      setValue("department", employerData.department);
+      setValue("position", employerData.position);
+    }
+  }, [employerData, setValue]);
+
   return (
     <ModalWrapper closeModal={closeModal}>
       <form className="space-y-6" onSubmit={handleSubmit(submit)}>
@@ -118,7 +139,7 @@ const AddEmployer = ({ closeModal }: ICloseModal) => {
       <Button
         variant="primary"
         className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition"
-        onClick={() => closeModal(false)}
+        onClick={handleCancel}
       >
         ✕
       </Button>
