@@ -9,6 +9,16 @@ export interface IEmployerForm {
   department: string;
   position: string;
   address: string;
+}
+
+export interface IEmployer {
+  id: string;
+  employer: string;
+  email: string;
+  phone: string;
+  department: string;
+  position: string;
+  address: string;
   created_at: string;
   user_id: string;
 }

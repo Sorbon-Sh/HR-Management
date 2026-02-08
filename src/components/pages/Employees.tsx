@@ -1,23 +1,39 @@
 import { useState } from "react";
-import { Search, Plus, Filter, Upload, Trash2, Edit } from "lucide-react";
+import { Search, Plus, Filter, Trash2, Edit } from "lucide-react";
 import Button from "../ui/buttons/Button";
 import Card from "../ui/cards/Card";
 import Avatar from "../ui/Avatar";
 import AddEmployer from "../ui/modals/AddEmployer";
 import { createPortal } from "react-dom";
-import { useGetEmployerQuery } from "../../shared/api/employerRequest";
+import {
+  useDeleteEmployerMutation,
+  useGetEmployerQuery,
+} from "../../shared/api/employerRequest";
 import Loading from "../layouts/Loading";
 import type { IEmployerForm } from "../../shared/types";
+import { toast } from "react-toastify";
 
 const Employees = () => {
   const { data: employees } = useGetEmployerQuery();
+  const [deleteEmployer] = useDeleteEmployerMutation();
   const [searchTerm, setSearchTerm] = useState("");
   const [employerModal, setEmployerModal] = useState(false);
   const [employerData, setEmployerData] = useState<IEmployerForm | null>(null);
-  console.log("Employees", "Start");
+  const [updateEmployer, setUpdateEmployer] = useState(false);
   const getEmployerId = (employee: IEmployerForm) => {
     setEmployerData(employee);
     setEmployerModal(true);
+  };
+
+  const handleDeleteEmployer = async (id: string[]) => {
+    const toastId = toast.loading("Удаление сотрудника...");
+    await deleteEmployer(id);
+    toast.update(toastId, {
+      type: "success",
+      isLoading: false,
+      render: "Сотрудник успешно удален",
+      autoClose: 3000,
+    });
   };
 
   return (
@@ -30,9 +46,6 @@ const Employees = () => {
           </p>
         </div>
         <div className="mt-4 md:mt-0 space-x-3">
-          <Button variant="outline" size="sm" icon={<Upload size={16} />}>
-            Import
-          </Button>
           <Button
             size="sm"
             icon={<Plus size={16} />}
@@ -154,9 +167,15 @@ const Employees = () => {
                           onClick={() => getEmployerId(employee)}
                           className="p-1 text-blue-500 rounded hover:bg-blue-50"
                         >
-                          <Edit size={16} />
+                          <Edit
+                            size={16}
+                            onClick={() => setUpdateEmployer(true)}
+                          />
                         </button>
-                        <button className="p-1 text-red-500 rounded hover:bg-red-50">
+                        <button
+                          onClick={() => handleDeleteEmployer([employee.id])}
+                          className="p-1 text-red-500 rounded hover:bg-red-50"
+                        >
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -198,6 +217,8 @@ const Employees = () => {
           <AddEmployer
             employerData={employerData}
             closeModal={setEmployerModal}
+            updateEmployer={updateEmployer}
+            setUpdateEmployer={setUpdateEmployer}
           />,
           document.body,
         )}

@@ -1,5 +1,5 @@
 import supabase from "./supabaseClient";
-import type { IEmployerForm } from "../types";
+import type { IEmployer } from "../types";
 import { rootApi } from "../redux/slices/rootApi";
 
 export const employerApi = rootApi.injectEndpoints({
@@ -19,7 +19,7 @@ export const employerApi = rootApi.injectEndpoints({
       },
       invalidatesTags: [{ type: "employees" }],
     }),
-    getEmployer: builder.query<IEmployerForm[], void>({
+    getEmployer: builder.query<IEmployer[], void>({
       queryFn: async () => {
         const { data: data, error } = await supabase
           .from("employees")
@@ -33,65 +33,35 @@ export const employerApi = rootApi.injectEndpoints({
       },
       providesTags: [{ type: "employees" }],
     }),
-    // updateEmployer: builder.mutation({
-    //   queryFn: async (formData) => {
-    //     const { data, error: planError } = await supabase
-    //       .from("employees")
-    //       .update({
-    //         ...formData,
-    //         annualAmount,
-    //         monthlyAmount,
-    //         maxAmount,
-    //         date,
-    //       })
-    //       .eq("id", rowsId);
+    updateEmploye: builder.mutation({
+      queryFn: async ({ formData, employerData }) => {
+        console.log("updateEmploye", employerData.id);
+        console.log("formData", formData);
+        const { data, error } = await supabase
+          .from("employees")
+          .update(formData)
+          .eq("id", employerData.id);
+        if (error) {
+          console.log(error.message);
+          throw new Error(error.message);
+        }
+        return { data: data || [] };
+      },
 
-    //     const { data: updatePlanTran, error: planTranError } = await supabase
-    //       .from("finplanTransactions")
-    //       .update({
-    //         fromPlan: formData.plan,
-    //       })
-    //       .eq("planId", rowsId);
+      invalidatesTags: [{ type: "employees" }],
+    }),
 
-    //     Promise.all([data, updatePlanTran]).catch(() => {
-    //       if (planError || planTranError) {
-    //         console.log(planError?.message || planTranError?.message);
-    //         throw new Error(planError?.message || planTranError?.message);
-    //       }
-    //     });
+    deleteEmployer: builder.mutation({
+      queryFn: async (rowsId) => {
+        const { data, error } = await supabase
+          .from("employees")
+          .delete()
+          .in("id", rowsId);
 
-    //     return { data: data || [] };
-    //   },
-
-    //   invalidatesTags: [{ type: "employer" }],
-    // }),
-
-    // deleteEmployer: builder.mutation({
-    //   queryFn: async (rowsId) => {
-    //     const deletePlan = await supabase
-    //       .from("finplans")
-    //       .delete()
-    //       .in("id", rowsId);
-
-    //     const deletePlanTransactions = await supabase
-    //       .from("finplanTransactions")
-    //       .delete()
-    //       .in("planId", rowsId);
-
-    //     const data = Promise.all([deletePlan, deletePlanTransactions])
-    //       .then((results) => {
-    //         const isError = results.find((result) => result.error);
-    //         if (isError) {
-    //           throw new Error(`${isError.error?.message}`);
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         throw new Error(`${error.message}`);
-    //       });
-    //     return { data: data || [] };
-    //   },
-    //   invalidatesTags: [{ type: "employer" }],
-    // }),
+        return { data: data || [] };
+      },
+      invalidatesTags: [{ type: "employees" }],
+    }),
   }),
 
   //  без overrideExisting: false RTK Query молча
@@ -103,6 +73,6 @@ export const employerApi = rootApi.injectEndpoints({
 export const {
   useAddEmployerMutation,
   useGetEmployerQuery,
-  //   useUpdateEmployerMutation,
-  //   useDeleteEmployerMutation,
+  useUpdateEmployeMutation,
+  useDeleteEmployerMutation,
 } = employerApi;

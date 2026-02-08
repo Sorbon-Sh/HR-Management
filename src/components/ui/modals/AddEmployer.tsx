@@ -1,26 +1,55 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import Button from "../buttons/Button";
 import ModalWrapper from "./ModalWrapper";
-import type { ICloseModal, IEmployerForm } from "../../../shared/types";
-import { useAddEmployerMutation } from "../../../shared/api/employerRequest";
+import type {
+  ICloseModal,
+  IEmployer,
+  IEmployerForm,
+} from "../../../shared/types";
+import {
+  useAddEmployerMutation,
+  useUpdateEmployeMutation,
+} from "../../../shared/api/employerRequest";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 
 interface IAddEmployerProps extends ICloseModal {
-  employerData: IEmployerForm;
+  employerData: IEmployer;
+  updateEmployer: boolean;
+  setUpdateEmployer: (value: boolean) => void;
 }
 
-const AddEmployer = ({ closeModal, employerData }: IAddEmployerProps) => {
+const AddEmployer = ({
+  closeModal,
+  employerData,
+  updateEmployer,
+  setUpdateEmployer,
+}: IAddEmployerProps) => {
   const [addEmployer] = useAddEmployerMutation();
+  const [updateEmploye] = useUpdateEmployeMutation();
   const { register, handleSubmit, setValue, reset } = useForm<IEmployerForm>();
+
   const handleCancel = () => {
     reset();
-    // closeModal(false);
+    setUpdateEmployer(false);
+    closeModal(false);
   };
-  console.log("AddEmployer", "Start");
-  const submit: SubmitHandler<IEmployerForm> = async (data) => {
+  const submit: SubmitHandler<IEmployerForm> = async (formData) => {
+    if (updateEmployer && employerData) {
+      console.log("employerData", employerData);
+      const toastId = toast.loading("Обновление сотрудника...");
+      await updateEmploye({ formData, employerData });
+      toast.update(toastId, {
+        type: "success",
+        isLoading: false,
+        render: "Обновление успешно добавлен",
+        autoClose: 3000,
+      });
+      return;
+    }
+    // ===============================================================
     const toastId = toast.loading("Добавление сотрудника...");
-    await addEmployer(data);
+    await addEmployer(formData);
     toast.update(toastId, {
       type: "success",
       isLoading: false,
@@ -30,18 +59,18 @@ const AddEmployer = ({ closeModal, employerData }: IAddEmployerProps) => {
   };
 
   useEffect(() => {
-    console.log("employerData", employerData);
-    if (employerData) {
+    console.log("UseEffect");
+    if (employerData && updateEmployer) {
       setValue("employer", employerData.employer);
       setValue("email", employerData.email);
       setValue("phone", employerData.phone);
       setValue("department", employerData.department);
       setValue("position", employerData.position);
     }
-  }, [employerData, setValue]);
+  }, [employerData, updateEmployer, setValue]);
 
   return (
-    <ModalWrapper closeModal={closeModal}>
+    <ModalWrapper closeModal={closeModal} reset={handleCancel}>
       <form className="space-y-6" onSubmit={handleSubmit(submit)}>
         <h2 className="text-3xl font-extrabold text-gray-800 mb-4">
           Добавить сотрудника
