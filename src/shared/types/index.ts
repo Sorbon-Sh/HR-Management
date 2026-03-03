@@ -22,3 +22,11 @@ export interface IEmployer {
   created_at: string;
   user_id: string;
 }
+
+export interface IProfiles {
+  id: string;
+  full_Name: string;
+  role: string;
+  team_id: string;
+  email: string;
+}

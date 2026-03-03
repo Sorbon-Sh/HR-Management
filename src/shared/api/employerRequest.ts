@@ -35,8 +35,6 @@ export const employerApi = rootApi.injectEndpoints({
     }),
     updateEmploye: builder.mutation({
       queryFn: async ({ formData, employerData }) => {
-        console.log("updateEmploye", employerData.id);
-        console.log("formData", formData);
         const { data, error } = await supabase
           .from("employees")
           .update(formData)

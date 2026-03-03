@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Plus, Filter, Trash2, Edit } from "lucide-react";
+import { Search, Plus, Trash2, Edit } from "lucide-react";
 import Button from "../ui/buttons/Button";
 import Card from "../ui/cards/Card";
 import Avatar from "../ui/Avatar";
@@ -16,7 +16,6 @@ import { toast } from "react-toastify";
 const Employees = () => {
   const { data: employees } = useGetEmployerQuery();
   const [deleteEmployer] = useDeleteEmployerMutation();
-  const [searchTerm, setSearchTerm] = useState("");
   const [employerModal, setEmployerModal] = useState(false);
   const [employerData, setEmployerData] = useState<IEmployerForm | null>(null);
   const [updateEmployer, setUpdateEmployer] = useState(false);
@@ -35,7 +34,6 @@ const Employees = () => {
       autoClose: 3000,
     });
   };
-
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
@@ -67,17 +65,11 @@ const Employees = () => {
                 type="text"
                 placeholder="Search employees..."
                 className="w-full py-2 pl-10 pr-4 text-sm bg-gray-50 border border-gray-200 rounded-md focus:outline-none focus:bg-white focus:border-blue-500 transition-colors duration-200"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
               />
               <div className="absolute left-3 top-2.5 text-gray-400">
                 <Search size={18} />
               </div>
             </div>
-
-            <button className="p-2 text-gray-500 rounded-md hover:bg-gray-100">
-              <Filter size={20} />
-            </button>
           </div>
         </div>
 

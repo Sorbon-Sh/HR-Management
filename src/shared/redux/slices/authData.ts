@@ -1,30 +1,35 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 interface IAuthData {
- signIn: null | {email: string, password:string},
- singUp: null | object
-
+  id: null | string;
+  full_Name: null | string;
+  team_id: string | null;
+  role: "manager" | "employee" | null;
+  email: null | string;
 }
-
 
 const initialState: IAuthData = {
-  signIn: null,
-  singUp: null,
-
-}
+  id: null,
+  full_Name: null,
+  role: null,
+  team_id: null,
+  email: null,
+};
 
 export const authDataSlice = createSlice({
-  name: 'authData',
+  name: "authData",
   initialState,
   reducers: {
-    signInData: (state, action) => {
-      state.signIn  = action.payload
+    authUser: (state, action) => {
+      state.role = action.payload;
     },
-
+    setProfile: (state, action) => {
+      state.team_id = action.payload.team_id;
+      state.role = action.payload.role;
+    },
   },
-})
+});
 
-export const { signInData } = authDataSlice.actions
+export const { authUser, setProfile } = authDataSlice.actions;
 
-
-export default authDataSlice.reducer
+export default authDataSlice.reducer;

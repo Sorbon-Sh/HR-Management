@@ -5,95 +5,98 @@ import { useNavigate } from "react-router";
 import type { InputsAuth } from "../../shared/types/AuthTypes";
 import { toast, ToastContainer } from "react-toastify";
 
-
 export default function AuthPage() {
-
   const [isLogin, setIsLogin] = useState(false);
-  const navigation = useNavigate()
-  const {register,handleSubmit,reset,formState: { errors }} = useForm<InputsAuth>()
+  const navigation = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<InputsAuth>();
 
-// * Блок обработчик ошибок формы
+  // * Блок обработчик ошибок формы
   const onError = () => {
-  if (errors.password?.message) {
-    toast.error(errors.password.message);
-  }
-};
+    if (errors.password?.message) {
+      toast.error(errors.password.message);
+    }
+  };
 
-  const submit: SubmitHandler<InputsAuth> = async  (formData) => {
+  const submit: SubmitHandler<InputsAuth> = async (formData) => {
+    // * Блок Входа в систему
+    if (isLogin) {
+      const toastLoading = toast.loading("Вход в систему...");
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: String(formData.password),
+      });
 
-// * Блок Входа в систему
-if(isLogin){
-   const toastLoading = toast.loading("Вход в систему...")
-    const {data, error} = await supabase.auth.signInWithPassword({
-    email: formData.email,
-    password: String(formData.password),
-  })
+      // * Блок Обработчик ошибок входа
+      if (error) {
+        toast.update(toastLoading, {
+          render: "Не правильный логин или пароль!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
 
-  // * Блок Обработчик ошибок входа
-  if(error){ 
-      toast.update(toastLoading, 
-{render: "Не правильный логин или пароль!",
-   type: "error", 
-   isLoading: false,
-   autoClose: 3000})
+        throw new Error(error.message);
+      }
 
-    throw new Error(error.message)
-  }
+      if (data) navigation("/onboarding");
 
-  if(data) navigation("/")
-reset()
-}
+      reset();
+    }
 
-// * Блок Регистрации пользователя
-  if(!isLogin){
-  const toastLoading = toast.loading("Регистрация пользователя...")
+    // * Блок Регистрации пользователя
+    if (!isLogin) {
+      const toastLoading = toast.loading("Регистрация пользователя...");
 
-  const { data, error } = await supabase.auth.signUp({
-  email: formData.email,
-  password: String(formData.password),
-})
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: String(formData.password),
+      });
 
-// * Блок создания профиля пользователя
-// * Создаем доп данные пользователя в Supabase (Cоздаём профиль) с методом Profiles
-if (data.user) {
+      // * Блок создания профиля пользователя
+      // * Создаем доп данные пользователя в Supabase (Cоздаём профиль) с методом Profiles
+      if (data.user) {
+        const { error: profileError } = await supabase.from("profiles").insert({
+          id: data.user.id,
+          email: formData.email,
+          full_name: formData.fullName,
+          role: "employee",
+        });
+        console.log("data", data);
+        console.log("formData", formData);
+        if (profileError) throw new Error(profileError.message);
+      }
 
-  const {error: profileError } = await supabase.from("profiles").insert({
-    id: data.user.id,
-    email: formData.email,
-    fullname: formData.fullName,
-    role: "user", // можно задать по умолчанию
-  });
+      // * Блок Обработчик ошибок регистрации
+      if (error) {
+        if (error.status === 422) {
+          toast.update(toastLoading, {
+            render: "Такой пользователь уже существует!",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+          });
+        }
 
-  if (profileError) throw new Error(profileError.message);
-}
+        if (error.status === 0) {
+          toast.update(toastLoading, {
+            render: "Нет интернета!",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+          });
+        }
 
-// * Блок Обработчик ошибок регистрации
-if(error){ 
-  
-    if(error.status === 422) {
-         toast.update(toastLoading, 
-{render: "Такой пользователь уже существует!",
-   type: "error", 
-   isLoading: false,
-   autoClose: 3000})
-  }
+        throw new Error(`${error.status}`);
+      }
 
-      if(error.status === 0) {
-         toast.update(toastLoading, 
-{render: "Нет интернета!",
-   type: "error", 
-   isLoading: false,
-   autoClose: 3000})
-  }
-
-  throw new Error(`${error.status}`)
-}
-
-if(data.user) navigation("/")
-}
-  }
-
- 
+      if (data.user) navigation("/onboarding");
+    }
+  };
 
   return (
     <div className="flex h-screen">
@@ -129,33 +132,28 @@ if(data.user) navigation("/")
             <input
               type="email"
               {...register("email", {
-                 required: true,
-                 setValueAs: (value) => value.trim() })}
+                required: true,
+                setValueAs: (value) => value.trim(),
+              })}
               placeholder="E-mail"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-     {/* {!isLogin && (
-             <select {...register("position", { required: true })} defaultValue="" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option  value="" disabled hidden>Позиция</option>
-              <option value="user">Пользовател</option>
-              <option value="admin">Администратор</option>
-            </select>
-     )} */}
+
             <input
               type="password"
-             {...register("password", {
-    setValueAs: (value) => value.trim(),
-    required: true,
-    minLength: {
-      value: 8,
-      message: "Минимальная длина пароля — 8 символов",
-    },
-    pattern: {
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
-      message:
-        "Пароль должен содержать хотя бы одну цифру, одну заглавную и одну строчную букву",
-    },
-  })}
+              {...register("password", {
+                setValueAs: (value) => value.trim(),
+                required: true,
+                minLength: {
+                  value: 8,
+                  message: "Минимальная длина пароля — 8 символов",
+                },
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+                  message:
+                    "Пароль должен содержать хотя бы одну цифру, одну заглавную и одну строчную букву",
+                },
+              })}
               placeholder="Пароль"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

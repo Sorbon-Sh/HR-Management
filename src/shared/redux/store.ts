@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import signInDataReducer from "./slices/authData";
+import authUserReducer from "./slices/authData";
 import { rootApi } from "./slices/rootApi";
 export const store = configureStore({
   reducer: {
-    usersSignIn: signInDataReducer,
+    userProfile: authUserReducer,
     // Все слайсы подключатся в один файл
     [rootApi.reducerPath]: rootApi.reducer,
   },

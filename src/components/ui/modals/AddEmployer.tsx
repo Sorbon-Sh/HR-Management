@@ -35,8 +35,8 @@ const AddEmployer = ({
     closeModal(false);
   };
   const submit: SubmitHandler<IEmployerForm> = async (formData) => {
+    // const userId = (await supabase.auth.getUser()).data.user?.id;
     if (updateEmployer && employerData) {
-      console.log("employerData", employerData);
       const toastId = toast.loading("Обновление сотрудника...");
       await updateEmploye({ formData, employerData });
       toast.update(toastId, {
