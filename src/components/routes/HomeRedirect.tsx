@@ -2,8 +2,7 @@ import { Navigate } from "react-router";
 import { useAppSelector } from "../../shared/hooks/useReduxTypedHooks";
 
 export const HomeRedirect = () => {
-  const role = useAppSelector((state) => state.userProfile.role);
-
+  const { role } = useAppSelector((state) => state.userProfile);
   if (role === "manager") {
     return <Navigate to="/dashboard" replace />;
   }
@@ -12,5 +11,5 @@ export const HomeRedirect = () => {
     return <Navigate to="/employer" replace />;
   }
 
-  return null;
+  return <Navigate to="/onboarding" replace />;
 };

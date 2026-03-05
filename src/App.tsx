@@ -42,6 +42,39 @@ function App() {
     //   </Routes>
     // </BrowserRouter>
 
+    // <BrowserRouter>
+    //   <Routes>
+    //     {/* Public */}
+    //     <Route path="/login" element={<AuthPage />} />
+
+    //     {/* Protected */}
+    //     <Route element={<ProtectedRoute />}>
+    //       <Route path="/onboarding" element={<OnboardingPage />} />
+    //       {/* Onboarding check */}
+    //       <Route element={<OnboardingGuard />}>
+    //         <Route element={<MainLayout />}>
+    //           <Route path="/" element={<HomeRedirect />} />
+    //           {/* Manager */}
+    //           <Route element={<RoleRoute allow={["manager"]} />}>
+    //             <Route path="/dashboard" element={<Dashboard />} />
+    //             <Route path="/employees" element={<Employees />} />
+    //             <Route path="/attendance" element={<Attendance />} />
+    //             <Route path="/leave" element={<Leave />} />
+    //             <Route path="/settings" element={<Settings />} />
+    //           </Route>
+
+    //           {/* Employee */}
+    //           <Route element={<RoleRoute allow={["employee"]} />}>
+    //             <Route path="/employer" element={<EmployeePage />} />
+    //           </Route>
+    //         </Route>
+    //       </Route>
+    //     </Route>
+
+    //     {/*</Route>*/}
+    //   </Routes>
+    // </BrowserRouter>
+
     <BrowserRouter>
       <Routes>
         {/* Public */}
@@ -49,12 +82,14 @@ function App() {
 
         {/* Protected */}
         <Route element={<ProtectedRoute />}>
+          {/* Онбординг всегда доступен */}
           <Route path="/onboarding" element={<OnboardingPage />} />
-          {/* Onboarding check */}
+
+          {/* Только если есть команда */}
           <Route element={<OnboardingGuard />}>
             <Route element={<MainLayout />}>
               <Route path="/" element={<HomeRedirect />} />
-              {/* Manager */}
+
               <Route element={<RoleRoute allow={["manager"]} />}>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/employees" element={<Employees />} />
@@ -63,15 +98,12 @@ function App() {
                 <Route path="/settings" element={<Settings />} />
               </Route>
 
-              {/* Employee */}
               <Route element={<RoleRoute allow={["employee"]} />}>
                 <Route path="/employer" element={<EmployeePage />} />
               </Route>
             </Route>
           </Route>
         </Route>
-
-        {/*</Route>*/}
       </Routes>
     </BrowserRouter>
   );

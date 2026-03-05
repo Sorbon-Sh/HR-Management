@@ -1,27 +1,34 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import supabase from "../../shared/api/supabaseClient";
 import LogoutButton from "../ui/buttons/LogoutButton";
 import { createTeam } from "../../services/teamService";
-import { useAppDispatch } from "../../shared/hooks/useReduxTypedHooks";
-import { setProfile } from "../../shared/redux/slices/authData";
 import { joinTeam } from "../../services/joinTeamService";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../shared/hooks/useReduxTypedHooks";
+import { setAuthData } from "../../shared/redux/slices/userProfile";
 
 export const OnboardingPage = () => {
   const [teamName, setTeamName] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const userData = useAppSelector((state) => state.userProfile);
+  const userId = useAppSelector((state) => state.userProfile.id);
+  const email = useAppSelector((state) => state.userProfile.email);
+  const full_name = useAppSelector((state) => state.userProfile.full_name);
+  console.log("User Data: ", userData);
   const handleCreate = async () => {
-    const { data } = await supabase.auth.getUser();
-    const userId = data.user?.id;
     if (!userId) return;
 
     const team = await createTeam(teamName, userId);
 
     dispatch(
-      setProfile({
+      setAuthData({
+        id: userId,
+        email: email!,
+        full_name: full_name,
         team_id: team.id,
         role: "manager",
       }),
@@ -31,15 +38,15 @@ export const OnboardingPage = () => {
   };
 
   const handleJoin = async () => {
-    const { data } = await supabase.auth.getUser();
-    const userId = data.user?.id;
-    console.log("userData", data);
     if (!userId) return;
 
     const team = await joinTeam(inviteCode, userId);
 
     dispatch(
-      setProfile({
+      setAuthData({
+        id: userId,
+        email: email!,
+        full_name: full_name,
         team_id: team.id,
         role: "employee",
       }),

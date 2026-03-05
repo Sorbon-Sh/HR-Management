@@ -1,11 +1,11 @@
-import { Outlet } from "react-router";
 import { Navigate } from "react-router";
 import { useAppSelector } from "../../shared/hooks/useReduxTypedHooks";
+import { Outlet } from "react-router";
 
 const OnboardingGuard = () => {
-  const profile = useAppSelector((state) => state.userProfile);
+  const { team_id } = useAppSelector((state) => state.userProfile);
 
-  if (!profile.team_id) {
+  if (!team_id) {
     return <Navigate to="/onboarding" replace />;
   }
 

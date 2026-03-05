@@ -3,11 +3,10 @@ import { useAppSelector } from "../../shared/hooks/useReduxTypedHooks";
 import { Outlet } from "react-router";
 
 export const RoleRoute = ({ allow }: { allow: string[] }) => {
-  const role = useAppSelector((state) => state.userProfile.role);
-  if (!role) return <div>Загрузка</div>;
+  const { role } = useAppSelector((state) => state.userProfile);
 
-  if (!allow.includes(role)) {
-    return <Navigate to="/employer" replace />;
+  if (!allow.includes(role!)) {
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

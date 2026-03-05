@@ -1,6 +1,6 @@
-  export interface InputsAuth {
-    fullName: string,
-    email: string,
-    password: number
-    position: string
-  }
+export interface InputsAuth {
+  full_name: string;
+  email: string;
+  password: number;
+  position: string;
+}

@@ -12,9 +12,14 @@ import {
 import Loading from "../layouts/Loading";
 import type { IEmployerForm } from "../../shared/types";
 import { toast } from "react-toastify";
+import { useAppSelector } from "../../shared/hooks/useReduxTypedHooks";
 
 const Employees = () => {
-  const { data: employees } = useGetEmployerQuery();
+  const teamId = useAppSelector((state) => state.userProfile.team_id);
+
+  const { data: employees, isLoading } = useGetEmployerQuery(teamId!, {
+    skip: !teamId,
+  });
   const [deleteEmployer] = useDeleteEmployerMutation();
   const [employerModal, setEmployerModal] = useState(false);
   const [employerData, setEmployerData] = useState<IEmployerForm | null>(null);

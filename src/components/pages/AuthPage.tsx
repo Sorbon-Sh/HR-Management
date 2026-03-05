@@ -43,7 +43,7 @@ export default function AuthPage() {
         throw new Error(error.message);
       }
 
-      if (data) navigation("/onboarding");
+      if (data) navigation("/");
 
       reset();
     }
@@ -63,7 +63,7 @@ export default function AuthPage() {
         const { error: profileError } = await supabase.from("profiles").insert({
           id: data.user.id,
           email: formData.email,
-          full_name: formData.fullName,
+          full_name: formData.full_name,
           role: "employee",
         });
         console.log("data", data);
@@ -94,7 +94,7 @@ export default function AuthPage() {
         throw new Error(`${error.status}`);
       }
 
-      if (data.user) navigation("/onboarding");
+      if (data.user) navigation("/");
     }
   };
 
@@ -120,7 +120,7 @@ export default function AuthPage() {
             {!isLogin && (
               <input
                 type="text"
-                {...register("fullName", {
+                {...register("full_name", {
                   required: true,
                   setValueAs: (value) => value.trim(),
                 })}

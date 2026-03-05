@@ -19,13 +19,24 @@ export const employerApi = rootApi.injectEndpoints({
       },
       invalidatesTags: [{ type: "employees" }],
     }),
-    getEmployer: builder.query<IEmployer[], void>({
-      queryFn: async () => {
-        const { data: data, error } = await supabase
+    getEmployer: builder.query<IEmployer[], string>({
+      queryFn: async (teamId) => {
+        const { data, error } = await supabase
           .from("employees")
-          .select("*");
+          .select(
+            `
+            id,
+            position,
+            salary,
+            profiles (
+              full_name,
+              email
+            )
+          `,
+          )
+          .eq("profiles.team_id", teamId);
+
         if (error) {
-          console.log(error.message);
           throw new Error(error.message);
         }
 
