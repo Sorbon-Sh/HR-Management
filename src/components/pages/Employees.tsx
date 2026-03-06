@@ -16,10 +16,9 @@ import { useAppSelector } from "../../shared/hooks/useReduxTypedHooks";
 
 const Employees = () => {
   const teamId = useAppSelector((state) => state.userProfile.team_id);
-
-  const { data: employees, isLoading } = useGetEmployerQuery(teamId!, {
-    skip: !teamId,
-  });
+  console.log("Team ID: ", teamId);
+  const { data: employees, isLoading } = useGetEmployerQuery(teamId);
+  console.log("Employee Data: ", employees && employees);
   const [deleteEmployer] = useDeleteEmployerMutation();
   const [employerModal, setEmployerModal] = useState(false);
   const [employerData, setEmployerData] = useState<IEmployerForm | null>(null);

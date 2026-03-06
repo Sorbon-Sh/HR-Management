@@ -55,9 +55,9 @@ export async function joinTeam(inviteCode: string, userId: string) {
   }
 
   // 3. Создаём запись в employees (ТОЛЬКО user_id)
-  const { error: employeeError } = await supabase.from("employees").insert({
-    user_id: userId,
-  });
+  const { error: employeeError } = await supabase
+    .from("employees")
+    .upsert({ user_id: userId }, { onConflict: "user_id" });
 
   if (employeeError) {
     throw employeeError;

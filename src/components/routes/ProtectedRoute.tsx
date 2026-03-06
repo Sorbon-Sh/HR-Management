@@ -6,12 +6,12 @@ import { useAppSelector } from "../../shared/hooks/useReduxTypedHooks";
 
 // * Сначало запускается компонет и читает весь код
 export const ProtectedRoute = () => {
-  const { id, isLoading } = useAppSelector((state) => state.userProfile);
+  const { id } = useAppSelector((state) => state.userProfile);
 
   console.log("ProtectedRoute Id:", id);
-  console.log("ProtectedRoute loading: ", isLoading);
-  if (isLoading) return <Loading />;
-  console.log("ProtectedRoute");
+
+  if (!id) return <Loading />;
+
   if (!id) return <Navigate to="/login" replace />;
 
   return (

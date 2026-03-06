@@ -44,7 +44,6 @@ export default function AuthPage() {
       }
 
       if (data) navigation("/");
-
       reset();
     }
 
@@ -94,7 +93,8 @@ export default function AuthPage() {
         throw new Error(`${error.status}`);
       }
 
-      if (data.user) navigation("/");
+      if (data) navigation("/");
+      reset();
     }
   };
 

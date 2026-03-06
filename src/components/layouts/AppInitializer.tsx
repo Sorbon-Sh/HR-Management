@@ -3,7 +3,10 @@
 //   const dispatch = useAppDispatch();
 
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "../../shared/hooks/useReduxTypedHooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../shared/hooks/useReduxTypedHooks";
 import supabase from "../../shared/api/supabaseClient";
 import {
   clearAuthData,
@@ -13,6 +16,7 @@ import {
 export const AppInitializer = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
+  const userData = useAppSelector((state) => state.userProfile);
 
   const loadUser = async (session: any) => {
     if (!session) {
@@ -61,5 +65,6 @@ export const AppInitializer = ({ children }: { children: React.ReactNode }) => {
 
   if (loading) return <div>Loading...</div>;
   console.log("App Init");
+  console.log("UserData: ", userData);
   return children;
 };
