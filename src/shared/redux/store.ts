@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userProfileReducer from "./slices/userProfile";
-import { rootApi } from "./slices/rootApi";
+import userProfileReducer from "@/shared/redux/slices/userProfile";
+import { rootApi } from "@/shared/redux/slices/rootApi";
 export const store = configureStore({
   reducer: {
     userProfile: userProfileReducer,

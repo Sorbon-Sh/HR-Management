@@ -3,4 +3,5 @@ export interface InputsAuth {
   email: string;
   password: number;
   position: string;
+  phone: string;
 }

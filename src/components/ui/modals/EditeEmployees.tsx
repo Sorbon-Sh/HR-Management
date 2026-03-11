@@ -1,31 +1,23 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import Button from "../buttons/Button";
-import ModalWrapper from "./ModalWrapper";
-import type {
-  ICloseModal,
-  IEmployer,
-  IEmployerForm,
-} from "../../../shared/types";
-import {
-  useAddEmployerMutation,
-  useUpdateEmployeMutation,
-} from "../../../shared/api/employerRequest";
+import Button from "@/components/ui/buttons/Button";
+import ModalWrapper from "@/components/ui/modals/ModalWrapper";
+import type { ICloseModal, IEmployerForm, IProfiles } from "@/shared/types";
+import { useUpdateEmployeMutation } from "@/shared/api/employerRequest";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 
 interface IAddEmployerProps extends ICloseModal {
-  employerData: IEmployer;
+  employerData: IProfiles;
   updateEmployer: boolean;
   setUpdateEmployer: (value: boolean) => void;
 }
 
-const AddEmployer = ({
+const EditeEmployees = ({
   closeModal,
   employerData,
   updateEmployer,
   setUpdateEmployer,
 }: IAddEmployerProps) => {
-  const [addEmployer] = useAddEmployerMutation();
   const [updateEmploye] = useUpdateEmployeMutation();
   const { register, handleSubmit, setValue, reset } = useForm<IEmployerForm>();
 
@@ -35,7 +27,7 @@ const AddEmployer = ({
     closeModal(false);
   };
   const submit: SubmitHandler<IEmployerForm> = async (formData) => {
-    // const userId = (await supabase.auth.getUser()).data.user?.id;
+    console.log("FormData: ", formData);
     if (updateEmployer && employerData) {
       const toastId = toast.loading("Обновление сотрудника...");
       await updateEmploye({ formData, employerData });
@@ -47,33 +39,26 @@ const AddEmployer = ({
       });
       return;
     }
+
     // ===============================================================
-    const toastId = toast.loading("Добавление сотрудника...");
-    await addEmployer(formData);
-    toast.update(toastId, {
-      type: "success",
-      isLoading: false,
-      render: "Сотрудник успешно добавлен",
-      autoClose: 3000,
-    });
   };
 
   useEffect(() => {
     console.log("UseEffect");
     if (employerData && updateEmployer) {
-      setValue("employer", employerData.employer);
+      setValue("full_name", employerData.full_name);
       setValue("email", employerData.email);
-      setValue("phone", employerData.phone);
-      setValue("department", employerData.department);
-      setValue("position", employerData.position);
+      setValue("phone", employerData.employees.phone);
+      setValue("department", employerData.employees.department);
+      setValue("position", employerData.employees.position);
     }
   }, [employerData, updateEmployer, setValue]);
 
   return (
     <ModalWrapper closeModal={closeModal} reset={handleCancel}>
-      <form className="space-y-6" onSubmit={handleSubmit(submit)}>
+      <form className="space-y-3" onSubmit={handleSubmit(submit)}>
         <h2 className="text-3xl font-extrabold text-gray-800 mb-4">
-          Добавить сотрудника
+          Редактировать
         </h2>
 
         <div>
@@ -84,11 +69,11 @@ const AddEmployer = ({
             Имя
           </label>
           <input
-            {...register("employer", { required: true })}
+            {...register("full_name", { required: true })}
             type="text"
             id="employerName"
             placeholder="Введите имя"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+            className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
           />
         </div>
 
@@ -104,7 +89,7 @@ const AddEmployer = ({
             type="email"
             id="employerEmail"
             placeholder="Введите email"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+            className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
           />
         </div>
 
@@ -120,7 +105,7 @@ const AddEmployer = ({
             type="tel"
             id="employerPhone"
             placeholder="+7 (999) 999-99-99"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+            className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
           />
         </div>
 
@@ -136,7 +121,7 @@ const AddEmployer = ({
             type="text"
             id="employerDepartment"
             placeholder="Отдел"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+            className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
           />
         </div>
 
@@ -152,7 +137,23 @@ const AddEmployer = ({
             type="text"
             id="employerPosition"
             placeholder="Направление"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+            className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+          />
+        </div>
+
+        <div>
+          <label
+            className="block text-sm font-medium text-gray-700 mb-2"
+            htmlFor="employerJoin"
+          >
+            Дата вступления
+          </label>
+          <input
+            {...register("joinDate")}
+            type="date"
+            id="employerJoin"
+            placeholder="Введите email"
+            className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
           />
         </div>
 
@@ -160,7 +161,7 @@ const AddEmployer = ({
           variant="primary"
           className="w-full py-3  text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-md"
         >
-          Добавить сотрудника
+          Изменить
         </Button>
       </form>
 
@@ -176,4 +177,4 @@ const AddEmployer = ({
   );
 };
 
-export default AddEmployer;
+export default EditeEmployees;

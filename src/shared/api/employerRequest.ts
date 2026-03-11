@@ -1,25 +1,37 @@
-import supabase from "./supabaseClient";
-import type { IEmployer } from "../types";
-import { rootApi } from "../redux/slices/rootApi";
+import supabase from "@/shared/api/supabaseClient";
+import type { IProfiles } from "@/shared/types";
+import { rootApi } from "@/shared/redux/slices/rootApi";
 
 export const employerApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
-    addEmployer: builder.mutation({
-      queryFn: async (formData) => {
-        const { data, error } = await supabase
-          .from("employees")
-          .insert(formData);
+    // addEmployer: builder.mutation({
+    //   queryFn: async (formData: IEmployer & IProfiles) => {
+    //     const { error: profileError } = await supabase
+    //       .from("profiles")
+    //       .update({
+    //         full_name: formData.full_name,
+    //         email: formData.email,
+    //       })
+    //       .eq("id", id);
 
-        if (error) {
-          console.log(error.message);
-          throw new Error(error.message);
-        }
+    //     if (profileError) {
+    //       throw new Error(profileError.message);
+    //     }
 
-        return { data: data || [] };
-      },
-      invalidatesTags: [{ type: "employees" }],
-    }),
-    getEmployer: builder.query<IEmployer[], string>({
+    //     const { data, error } = await supabase
+    //       .from("employees")
+    //       .insert(formData);
+
+    //     if (error) {
+    //       console.log(error.message);
+    //       throw new Error(error.message);
+    //     }
+
+    //     return { data: data || [] };
+    //   },
+    //   invalidatesTags: [{ type: "employees" }],
+    // }),
+    getEmployer: builder.query<IProfiles[], string>({
       queryFn: async (teamId) => {
         const { data, error } = await supabase
           .from("profiles")
@@ -30,7 +42,10 @@ export const employerApi = rootApi.injectEndpoints({
             email,
             employees!employees_user_id_fkey (
               position,
-              department
+              department,
+              phone,
+              user_id,
+              created_at
             )
           `,
           )
@@ -48,28 +63,49 @@ export const employerApi = rootApi.injectEndpoints({
     }),
     updateEmploye: builder.mutation({
       queryFn: async ({ formData, employerData }) => {
+        const { full_name, email, phone, position, department } = formData;
+        const { employees } = employerData;
+        console.log("user ID: ", employees.user_id);
+        console.log("formData: ", formData);
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .update({
+            full_name,
+            email,
+          })
+          .eq("id", employees.user_id);
+
+        if (profileError) throw new Error(profileError.message);
+
         const { data, error } = await supabase
           .from("employees")
-          .update(formData)
-          .eq("id", employerData.id);
-        if (error) {
-          console.log(error.message);
-          throw new Error(error.message);
-        }
-        return { data: data || [] };
-      },
+          .update({
+            position,
+            department,
+            phone,
+          })
+          .eq("user_id", employees.user_id)
+          .select();
 
+        if (error) throw new Error(error.message);
+
+        return { data };
+      },
       invalidatesTags: [{ type: "employees" }],
     }),
 
     deleteEmployer: builder.mutation({
-      queryFn: async (rowsId) => {
-        const { data, error } = await supabase
-          .from("employees")
-          .delete()
-          .in("id", rowsId);
+      queryFn: async (profile) => {
+        const { id } = profile;
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .update({
+            team_id: "",
+          })
+          .eq("id", id);
+        if (profileError) throw new Error(profileError.message);
 
-        return { data: data || [] };
+        return { data: id };
       },
       invalidatesTags: [{ type: "employees" }],
     }),
@@ -82,7 +118,6 @@ export const employerApi = rootApi.injectEndpoints({
 });
 
 export const {
-  useAddEmployerMutation,
   useGetEmployerQuery,
   useUpdateEmployeMutation,
   useDeleteEmployerMutation,

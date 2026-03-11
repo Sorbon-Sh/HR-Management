@@ -1,4 +1,4 @@
-import supabase from "../shared/api/supabaseClient";
+import supabase from "@/shared/api/supabaseClient";
 
 export async function createTeam(teamName: string, userId: string) {
   const { data: team, error } = await supabase

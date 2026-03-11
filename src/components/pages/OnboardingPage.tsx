@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import LogoutButton from "../ui/buttons/LogoutButton";
-import { createTeam } from "../../services/teamService";
-import { joinTeam } from "../../services/joinTeamService";
+import LogoutButton from "@/components/ui/buttons/LogoutButton";
+import { createTeam } from "@/services/teamService";
+import { joinTeam } from "@/services/joinTeamService";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../shared/hooks/useReduxTypedHooks";
-import { setAuthData } from "../../shared/redux/slices/userProfile";
+} from "@/shared/hooks/useReduxTypedHooks";
+import { setAuthData } from "@/shared/redux/slices/userProfile";
 
-export const OnboardingPage = () => {
+const OnboardingPage = () => {
   const [teamName, setTeamName] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const navigate = useNavigate();
@@ -83,3 +83,5 @@ export const OnboardingPage = () => {
     </div>
   );
 };
+
+export default OnboardingPage;

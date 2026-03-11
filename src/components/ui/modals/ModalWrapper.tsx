@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import useCloseModal from "../../../shared/hooks/useCloseModal";
+import useCloseModal from "@/shared/hooks/useCloseModal";
 
 interface IProps {
   closeModal: (value: boolean) => void;

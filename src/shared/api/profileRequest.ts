@@ -1,6 +1,6 @@
-import { rootApi } from "../redux/slices/rootApi";
-import type { IProfiles } from "../types";
-import supabase from "./supabaseClient";
+import { rootApi } from "@/shared/redux/slices/rootApi";
+import type { IProfiles } from "@/shared/types";
+import supabase from "@/shared/api/supabaseClient";
 
 export const profilesApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({

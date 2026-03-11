@@ -3,30 +3,28 @@ export interface ICloseModal {
 }
 
 export interface IEmployerForm {
-  employer: string;
+  full_name: string;
   email: string;
   phone: string;
   department: string;
   position: string;
-  address: string;
+  joinDate: string;
 }
 
 export interface IEmployer {
   id: string;
-  employer: string;
-  email: string;
+  user_id: string;
   phone: string;
   department: string;
   position: string;
-  address: string;
   created_at: string;
-  user_id: string;
 }
 
 export interface IProfiles {
   id: string;
-  full_Name: string;
+  full_name: string;
+  email: string;
   role: string;
   team_id: string;
-  email: string;
+  employees: IEmployer;
 }

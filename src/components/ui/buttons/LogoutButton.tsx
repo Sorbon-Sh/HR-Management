@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router";
-import supabase from "../../../shared/api/supabaseClient";
+import supabase from "@/shared/api/supabaseClient";
 import { toast } from "react-toastify";
-import { useAppDispatch } from "../../../shared/hooks/useReduxTypedHooks";
-import { rootApi } from "../../../shared/redux/slices/rootApi";
+import { useAppDispatch } from "@/shared/hooks/useReduxTypedHooks";
+import { rootApi } from "@/shared/redux/slices/rootApi";
 const LogoutButton = () => {
   const navigation = useNavigate();
   const dispatch = useAppDispatch();

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import supabase from "../../shared/api/supabaseClient";
+import supabase from "@/shared/api/supabaseClient";
 import { useNavigate } from "react-router";
-import type { InputsAuth } from "../../shared/types/AuthTypes";
+import type { InputsAuth } from "@/shared/types/AuthTypes";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function AuthPage() {
@@ -65,8 +65,6 @@ export default function AuthPage() {
           full_name: formData.full_name,
           role: "employee",
         });
-        console.log("data", data);
-        console.log("formData", formData);
         if (profileError) throw new Error(profileError.message);
       }
 

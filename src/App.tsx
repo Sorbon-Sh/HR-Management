@@ -1,17 +1,17 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import Employees from "./components/pages/Employees";
-import Leave from "./components/pages/LeaveManagement";
+import Employees from "./components/pages/managerPages/Employees";
+import Leave from "./components/pages/managerPages/LeaveManagement";
 import Settings from "./components/pages/Settings";
-import Dashboard from "./components/pages/Dashboard";
-import Attendance from "./components/pages/Attendance";
+import Dashboard from "./components/pages/managerPages/Dashboard";
+import Attendance from "./components/pages/managerPages/Attendance";
 import AuthPage from "./components/pages/AuthPage";
 import { ProtectedRoute } from "./components/routes/ProtectedRoute";
 import MainLayout from "./components/layouts/MainLayout";
 import { RoleRoute } from "./components/routes/RoleRoute";
-import { OnboardingPage } from "./components/pages/OnboardingPage";
 import { HomeRedirect } from "./components/routes/HomeRedirect";
 import OnboardingGuard from "./components/routes/OnboardingGuard";
-import EmployeePage from "./components/pages/EmployeePage";
+import EmployeePage from "./components/pages/employeePages/EmployeePage";
+import OnboardingPage from "./components/pages/OnboardingPage";
 
 function App() {
   return (

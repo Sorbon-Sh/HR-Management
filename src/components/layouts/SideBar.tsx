@@ -6,8 +6,11 @@ import {
   Building2,
 } from "lucide-react";
 import { NavLink } from "react-router";
+import { useAppSelector } from "../../shared/hooks/useReduxTypedHooks";
+import { ProfileCard } from "../ui/cards/ProfileCard";
 
 const Sidebar = () => {
+  const { full_name, role } = useAppSelector((state) => state.userProfile);
   const navItems = [
     // {
     //   path: "/dashboard",
@@ -34,43 +37,36 @@ const Sidebar = () => {
           </div>
         </div>
 
-        {/* Navigation */}
         <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive
-                    ? "bg-blue-50 text-blue-700"
-                    : "text-white hover:bg-gray-100"
-                }`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  <span className={`${isActive ? "text-blue-600" : ""}`}>
-                    {item.icon}
-                  </span>
-                  <span className="ml-3">{item.name}</span>
-                </>
-              )}
-            </NavLink>
-          ))}
+          {role === "manager"
+            ? navItems.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                      isActive
+                        ? "bg-blue-50 text-blue-700"
+                        : "text-white hover:bg-gray-100"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span className={`${isActive ? "text-blue-600" : ""}`}>
+                        {item.icon}
+                      </span>
+                      <span className="ml-3">{item.name}</span>
+                    </>
+                  )}
+                </NavLink>
+              ))
+            : null}
         </nav>
 
         {/* User profile */}
         <div className="p-4 border-t border-gray-200">
-          <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
-              JS
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium ">John Smith</p>
-              <p className="text-xs font-medium ">HR Manager</p>
-            </div>
-          </div>
+          <ProfileCard name={full_name} role={role} />
         </div>
       </div>
     </>

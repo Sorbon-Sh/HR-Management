@@ -1,31 +1,30 @@
 import { useState } from "react";
-import { Search, Plus, Trash2, Edit } from "lucide-react";
-import Button from "../ui/buttons/Button";
-import Card from "../ui/cards/Card";
-import Avatar from "../ui/Avatar";
-import AddEmployer from "../ui/modals/AddEmployer";
+import { Search, Trash2, Edit } from "lucide-react";
+import Card from "@/components/ui/cards/Card";
+import Avatar from "@/components/ui/Avatar";
+import EditeEmployees from "@/components/ui/modals/EditeEmployees";
 import { createPortal } from "react-dom";
 import {
   useDeleteEmployerMutation,
   useGetEmployerQuery,
-} from "../../shared/api/employerRequest";
-import Loading from "../layouts/Loading";
-import type { IEmployerForm } from "../../shared/types";
+} from "@/shared/api/employerRequest";
+import Loading from "@/components/layouts/Loading";
+import type { IProfiles } from "@/shared/types";
 import { toast } from "react-toastify";
-import { useAppSelector } from "../../shared/hooks/useReduxTypedHooks";
+import { useAppSelector } from "@/shared/hooks/useReduxTypedHooks";
 
 const Employees = () => {
   const teamId = useAppSelector((state) => state.userProfile.team_id);
   console.log("Team ID: ", teamId);
-  const { data: employees, isLoading } = useGetEmployerQuery(teamId);
+  const { data: employees } = useGetEmployerQuery(teamId);
   console.log("Employee Data: ", employees && employees);
   const [deleteEmployer] = useDeleteEmployerMutation();
-  const [employerModal, setEmployerModal] = useState(false);
-  const [employerData, setEmployerData] = useState<IEmployerForm | null>(null);
+  const [EditEmployer, setEditEmployer] = useState(false);
+  const [employerData, setEmployerData] = useState<IProfiles | null>(null);
   const [updateEmployer, setUpdateEmployer] = useState(false);
-  const getEmployerId = (employee: IEmployerForm) => {
+  const getEmployerId = (employee: IProfiles) => {
     setEmployerData(employee);
-    setEmployerModal(true);
+    setEditEmployer(true);
   };
 
   const handleDeleteEmployer = async (id: string[]) => {
@@ -47,17 +46,7 @@ const Employees = () => {
             Manage your company's employees and their information.
           </p>
         </div>
-        <div className="mt-4 md:mt-0 space-x-3">
-          <Button
-            size="sm"
-            icon={<Plus size={16} />}
-            onClick={() => {
-              setEmployerModal(true);
-            }}
-          >
-            Add Employee
-          </Button>
-        </div>
+        <div className="mt-4 md:mt-0 space-x-3"></div>
       </div>
 
       <Card noPadding>
@@ -125,15 +114,15 @@ const Employees = () => {
               {employees ? (
                 employees.map((employee) => (
                   <tr
-                    key={employee.employer}
+                    key={employee.employees.user_id}
                     className="hover:bg-gray-50 transition-colors duration-150"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <Avatar name={employee.employer} size="sm" />
+                        <Avatar name={employee.full_name} size="sm" />
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">
-                            {employee.employer}
+                            {employee.full_name}
                           </div>
                           <div className="text-sm text-gray-500">
                             {employee.email}
@@ -142,21 +131,20 @@ const Employees = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {employee.phone}
+                      {employee.employees.phone}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {employee.department}
+                      {employee.employees.department}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {employee.position}
+                      {employee.employees.position}
                     </td>
 
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {new Date(employee.created_at).toLocaleDateString()}
+                      {new Date(
+                        employee.employees.created_at,
+                      ).toLocaleDateString()}
                     </td>
-                    {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    Text
-                  </td> */}
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end space-x-2">
                         <button
@@ -169,7 +157,7 @@ const Employees = () => {
                           />
                         </button>
                         <button
-                          onClick={() => handleDeleteEmployer([employee.id])}
+                          onClick={() => handleDeleteEmployer(employee)}
                           className="p-1 text-red-500 rounded hover:bg-red-50"
                         >
                           <Trash2 size={16} />
@@ -183,36 +171,13 @@ const Employees = () => {
               )}
             </tbody>
           </table>
-
-          {/* Pagination */}
-          <div className="px-6 py-4 flex items-center justify-between border-t border-gray-200">
-            <div className="text-sm text-gray-500">
-              Showing <span className="font-medium">1</span> to{" "}
-              <span className="font-medium">5</span> of{" "}
-              <span className="font-medium">5</span> results
-            </div>
-            <div className="flex space-x-2">
-              <button
-                className="px-3 py-1 text-sm font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled
-              >
-                Previous
-              </button>
-              <button
-                className="px-3 py-1 text-sm font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled
-              >
-                Next
-              </button>
-            </div>
-          </div>
         </div>
       </Card>
-      {employerModal &&
+      {EditEmployer &&
         createPortal(
-          <AddEmployer
+          <EditeEmployees
             employerData={employerData}
-            closeModal={setEmployerModal}
+            closeModal={setEditEmployer}
             updateEmployer={updateEmployer}
             setUpdateEmployer={setUpdateEmployer}
           />,
